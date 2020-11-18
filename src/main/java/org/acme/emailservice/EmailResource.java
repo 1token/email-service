@@ -1,15 +1,12 @@
 package org.acme.emailservice;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import org.eclipse.microprofile.graphql.GraphQLApi;
+import org.eclipse.microprofile.graphql.Query;
 
-@Path("/resteasy/hello")
+@GraphQLApi
 public class EmailResource {
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Query
     public String hello() {
         return "hello";
     }
