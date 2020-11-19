@@ -15,8 +15,8 @@ public class TagService {
     EntityManager em;
     
     public List<Tag> getTags(){
-        /* return (List<Tag>)em.createQuery("SELECT * FROM tb_tag t", Tag.class)
+        /* return (List<Tag>)em.createQuery("SELECT t FROM Tag t", Tag.class)
                 .getResultList(); */
-        return (List<Tag>)em.createNamedQuery("Tags.findAll", Tag.class ).getResultList();        
+        return (List<Tag>)em.createNamedQuery("Tags.getAll", Tag.class ).getResultList();        
     }
 }
