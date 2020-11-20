@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 // import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "tag")
+@Table(name = "msg_tag")
 @NamedQuery(name = "Tags.getAll", query = "SELECT t FROM Tag t ORDER BY t.value")
 public class Tag {
 
