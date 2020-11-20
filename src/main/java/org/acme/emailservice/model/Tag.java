@@ -10,10 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+// import javax.persistence.Temporal;
+// import javax.persistence.TemporalType;
 
-// import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "msg_tag")
@@ -22,15 +22,16 @@ public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonbTransient
+    // @JsonbTransient
     private Long id;
     
     @Column(unique = true, nullable = false)
     private String key;
     private String value;
-    // @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "timestamp without time zone NOT NULL DEFAULT now()")
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    // @Temporal(TemporalType.TIMESTAMP)
+    // @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "timestamp without time zone NOT NULL DEFAULT now()")
 	private Date timestamp;
 
     public Long getId() {
