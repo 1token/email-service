@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 // import javax.persistence.Temporal;
 // import javax.persistence.TemporalType;
@@ -27,7 +28,14 @@ public class Tag {
     
     @Column(unique = true, nullable = false)
     private String key;
+
     private String value;
+
+    @SequenceGenerator(name = "timelineSeq", sequenceName = "timeline_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="timelineSeq")
+    @Column(columnDefinition="serial", unique = true, nullable = false)
+    private Long timelineId;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     // @Temporal(TemporalType.TIMESTAMP)
@@ -56,6 +64,14 @@ public class Tag {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getTimelineId() {
+        return timelineId;
+    }
+
+    public void setTimelineId(Long timelineId) {
+        this.timelineId = timelineId;
     }
 
     public Date getTimestamp() {

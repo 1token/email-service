@@ -16,12 +16,10 @@ public class TagService {
     EntityManager em;
 
     public Tag getTag(Long id){
-        System.out.println("======= Getting tag [" + id +"] =======");
         return em.find(Tag.class,id);
     }
 
     public Tag getTag(Tag tag) {
-        System.out.println("======= Getting tag [" + tag +"] =======");
         Tag t = em.find(Tag.class, tag);
         System.out.println("Error");
         return t;
