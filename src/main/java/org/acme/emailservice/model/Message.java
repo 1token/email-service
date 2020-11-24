@@ -1,16 +1,24 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.ForeignKey;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,9 +31,18 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, updatable = false)
     private String owner;
 
     private String subject;
+
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+        )
+    @JoinColumn(name = "message_id", nullable = false, foreignKey = @ForeignKey(name = "fk_msg_tag_id"))
+    private Set<Tag> tags = new HashSet<>();
     
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -42,7 +59,7 @@ public class Message {
     private Byte lastStmt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (now()::timestamptz AT TIME ZONE 'UTC')")
+    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT timezone('UTC'::text, now())")
 	private Date timestamp;
 
     public Long getId() {
@@ -67,6 +84,24 @@ public class Message {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Optional<Tag> getTag(final String key) {
+        return tags.stream()
+                .filter(tag -> tag.getKey().equals(key))
+                .findFirst();
+    }
+
+    public void addSkill(final Tag tag) {
+        tags.add(tag);
     }
 
     public Long getTimelineId() {

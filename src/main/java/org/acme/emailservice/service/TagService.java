@@ -26,9 +26,9 @@ public class TagService {
     }
     
     public List<Tag> getTags(){
-        return (List<Tag>)em.createQuery("SELECT t FROM Tag t", Tag.class)
-                .getResultList();
-        /* return (List<Tag>)em.createNamedQuery("Tags.getAll", Tag.class).getResultList(); */        
+        /* return (List<Tag>)em.createQuery("SELECT t FROM Tag t", Tag.class)
+                .getResultList(); */
+        return (List<Tag>)em.createNamedQuery("Tags.getAll", Tag.class).getResultList();        
     }
 
     @Transactional
