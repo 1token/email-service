@@ -2,11 +2,14 @@ package org.acme.emailservice.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,13 +39,17 @@ public class Message {
 
     private String subject;
 
-    @OneToMany(
+    /* @OneToMany(
         cascade = CascadeType.ALL,
         orphanRemoval = true,
         fetch = FetchType.LAZY
         )
-    @JoinColumn(name = "message_id", nullable = false, foreignKey = @ForeignKey(name = "fk_msg_tag_id"))
-    private Set<Tag> tags = new HashSet<>();
+    @JoinColumn(name = "message_id", nullable = false, foreignKey = @ForeignKey(name = "fk_msg_tag_id")) */
+    // @ElementCollection
+    // @CollectionTable(name = "msg_tag", joinColumns = @JoinColumn(name = "message_id"))
+    // @ElementCollection(fetch = FetchType.EAGER, targetClass=Tag.class)
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Tag> tags;
     
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -86,11 +93,11 @@ public class Message {
         this.subject = subject;
     }
 
-    public Set<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
