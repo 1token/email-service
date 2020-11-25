@@ -1,16 +1,17 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,22 +20,20 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "msg_tag")
-@NamedQuery(name = "Tag.getAll", query = "SELECT t FROM Tag t ORDER BY t.value")
-public class Tag {
+@Table(name = "user_")
+@NamedQuery(name = "User.getAll", query = "SELECT u FROM User u ORDER BY u.username")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne()
-    @JsonbTransient
-    @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    private  Message message;
-    
-    private String key;
+    @Column(nullable = false, updatable = false)
+    private String username;
 
-    private String value;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @OneToMany(fetch = FetchType.LAZY)
+    private List<Account> accounts;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT timezone('UTC'::text, now())")
@@ -48,19 +47,19 @@ public class Tag {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getUsername() {
+        return username;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getValue() {
-        return value;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }

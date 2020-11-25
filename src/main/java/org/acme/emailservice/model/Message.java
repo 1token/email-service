@@ -1,54 +1,49 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.ForeignKey;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "message")
-@NamedQuery(name = "Messages.getAll", query = "SELECT m FROM Message m ORDER BY m.timelineId")
+@NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m ORDER BY m.timelineId DESC")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false)
-    private String owner;
+    @ManyToOne()
+    @JsonbTransient
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    // @OnDelete(action = OnDeleteAction.CASCADE)
+    private  Account account;
 
     private String subject;
 
-    /* @OneToMany(
-        cascade = CascadeType.ALL,
-        orphanRemoval = true,
-        fetch = FetchType.LAZY
-        )
-    @JoinColumn(name = "message_id", nullable = false, foreignKey = @ForeignKey(name = "fk_msg_tag_id")) */
-    // @ElementCollection
-    // @CollectionTable(name = "msg_tag", joinColumns = @JoinColumn(name = "message_id"))
-    // @ElementCollection(fetch = FetchType.EAGER, targetClass=Tag.class)
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @OneToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
     
     @GeneratedValue(generator="increment")
@@ -77,14 +72,6 @@ public class Message {
         this.id = id;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
     public String getSubject() {
         return subject;
     }
@@ -101,15 +88,15 @@ public class Message {
         this.tags = tags;
     }
 
-    public Optional<Tag> getTag(final String key) {
+    /* public Optional<Tag> getTag(final String key) {
         return tags.stream()
                 .filter(tag -> tag.getKey().equals(key))
                 .findFirst();
     }
 
-    public void addSkill(final Tag tag) {
+    public void addTag(final Tag tag) {
         tags.add(tag);
-    }
+    } */
 
     public Long getTimelineId() {
         return timelineId;
@@ -133,13 +120,5 @@ public class Message {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 }

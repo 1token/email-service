@@ -16,7 +16,7 @@ public class TagService {
     EntityManager em;
 
     public Tag getTag(Long id){
-        return em.find(Tag.class,id);
+        return em.find(Tag.class, id);
     }
 
     public Tag getTag(Tag tag) {
@@ -26,9 +26,7 @@ public class TagService {
     }
     
     public List<Tag> getTags(){
-        /* return (List<Tag>)em.createQuery("SELECT t FROM Tag t", Tag.class)
-                .getResultList(); */
-        return (List<Tag>)em.createNamedQuery("Tags.getAll", Tag.class).getResultList();        
+        return (List<Tag>)em.createNamedQuery("Tag.getAll", Tag.class).getResultList();        
     }
 
     @Transactional
