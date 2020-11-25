@@ -22,8 +22,6 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "message")
@@ -36,14 +34,11 @@ public class Message {
     @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     private  Account account;
 
     private String subject;
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    // @OneToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
     
     @GeneratedValue(generator="increment")

@@ -16,9 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 @Entity
 @Table(name = "user_")
 @NamedQuery(name = "User.getAll", query = "SELECT u FROM User u ORDER BY u.username")
@@ -31,8 +28,6 @@ public class User {
     private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @OneToMany(fetch = FetchType.LAZY)
     private List<Account> accounts;
 
     @Temporal(TemporalType.TIMESTAMP)

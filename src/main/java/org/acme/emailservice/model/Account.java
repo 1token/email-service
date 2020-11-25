@@ -19,9 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 @Entity
 @Table(name = "account")
 @NamedQuery(name = "Account.getAll", query = "SELECT a FROM Account a ORDER BY a.name")
@@ -33,15 +30,12 @@ public class Account {
     @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     private  User user;
 
     @Column(nullable = false, updatable = false)
     private String name;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @OneToMany(fetch = FetchType.LAZY)
     private List<Message> messages;
 
     @Temporal(TemporalType.TIMESTAMP)

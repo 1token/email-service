@@ -15,9 +15,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 @Entity
 @Table(name = "msg_tag")
 @NamedQuery(name = "Tag.getAll", query = "SELECT t FROM Tag t ORDER BY t.value")
@@ -29,7 +26,6 @@ public class Tag {
     @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     private  Message message;
     
     private String key;
