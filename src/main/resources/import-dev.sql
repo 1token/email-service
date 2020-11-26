@@ -1,18 +1,17 @@
 -- DDL
-DROP SEQUENCE IF EXISTS timeline_id;
-CREATE SEQUENCE IF NOT EXISTS timeline_id;
-DROP SEQUENCE IF EXISTS history_id;
-CREATE SEQUENCE IF NOT EXISTS history_id;
-
--- ALTER TABLE PUBLIC.MESSAGE
--- ALTER COLUMN timeline_id BIGINT DEFAULT (NEXT VALUE FOR PUBLIC.timeline_id) NOT NULL;
--- ALTER TABLE PUBLIC.MESSAGE
--- ALTER COLUMN history_id BIGINT DEFAULT (NEXT VALUE FOR PUBLIC.history_id) NOT NULL;
+DROP SEQUENCE IF EXISTS message_timeline_id;
+CREATE SEQUENCE IF NOT EXISTS message_timeline_id;
+DROP SEQUENCE IF EXISTS message_history_id;
+CREATE SEQUENCE IF NOT EXISTS message_history_id;
+DROP SEQUENCE IF EXISTS label_history_id;
+CREATE SEQUENCE IF NOT EXISTS label_history_id;
 
 ALTER TABLE public.message ALTER COLUMN timeline_id SET NOT NULL;
-ALTER TABLE public.message ALTER COLUMN timeline_id SET DEFAULT NEXTVAL('timeline_id');
+ALTER TABLE public.message ALTER COLUMN timeline_id SET DEFAULT NEXTVAL('message_timeline_id');
 ALTER TABLE public.message ALTER COLUMN history_id SET NOT NULL;
-ALTER TABLE public.message ALTER COLUMN history_id SET DEFAULT NEXTVAL('history_id');
+ALTER TABLE public.message ALTER COLUMN history_id SET DEFAULT NEXTVAL('message_history_id');
+ALTER TABLE public.label ALTER COLUMN history_id SET NOT NULL;
+ALTER TABLE public.label ALTER COLUMN history_id SET DEFAULT NEXTVAL('label_history_id');
 
 -- Data
 INSERT INTO user_(username) VALUES ('igor@acme.org');

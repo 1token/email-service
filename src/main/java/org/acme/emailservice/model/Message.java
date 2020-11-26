@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -41,13 +43,19 @@ public class Message {
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tag> tags;
+
+    @ManyToMany()
+    @JoinTable(name = "labels_messages",
+            joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
+    private List<Label> labels;
     
-    @SequenceGenerator(name="timelineId", sequenceName="timeline_id")
-    @GeneratedValue(generator="timelineId", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="messageTimelineId", sequenceName="message_timeline_id")
+    @GeneratedValue(generator="messageTimelineId", strategy = GenerationType.SEQUENCE)
     private Long timelineId;
 
-    @SequenceGenerator(name="historyId", sequenceName="history_id")
-    @GeneratedValue(generator="historyId", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="messageHistoryId", sequenceName="message_history_id")
+    @GeneratedValue(generator="messageHistoryId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
     @Column(nullable = false)
@@ -80,6 +88,14 @@ public class Message {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
     }
 
     /* public Optional<Tag> getTag(final String key) {
