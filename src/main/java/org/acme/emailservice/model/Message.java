@@ -16,17 +16,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "message")
 @NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m ORDER BY m.timelineId DESC")
 public class Message {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,14 +42,12 @@ public class Message {
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tag> tags;
     
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
-    @Column(columnDefinition="serial", unique = true, nullable = false)
+    @SequenceGenerator(name="timelineId", sequenceName="timeline_id")
+    @GeneratedValue(generator="timelineId", strategy = GenerationType.SEQUENCE)
     private Long timelineId;
 
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
-    @Column(columnDefinition="serial", nullable = false)
+    @SequenceGenerator(name="historyId", sequenceName="history_id")
+    @GeneratedValue(generator="historyId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
     @Column(nullable = false)
@@ -56,7 +55,7 @@ public class Message {
     private Byte lastStmt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT timezone('UTC'::text, now())")
+    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
 	private Date timestamp;
 
     public Long getId() {

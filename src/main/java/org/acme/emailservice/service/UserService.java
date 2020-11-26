@@ -11,6 +11,7 @@ import org.acme.emailservice.model.User;
 
 @ApplicationScoped
 public class UserService {
+    
     @PersistenceContext(name="UserDS")
     EntityManager em;
 

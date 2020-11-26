@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 @Table(name = "user_")
 @NamedQuery(name = "User.getAll", query = "SELECT u FROM User u ORDER BY u.username")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +32,7 @@ public class User {
     private List<Account> accounts;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT timezone('UTC'::text, now())")
+    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
 	private Date timestamp;
 
     public Long getId() {
