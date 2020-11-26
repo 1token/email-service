@@ -34,3 +34,22 @@ INSERT INTO message(account_id, subject) VALUES (4, 'Rebonjour!');
 INSERT INTO msg_tag(message_id, key, value) VALUES (1, 'INVOICE', 'Invoice');
 INSERT INTO msg_tag(message_id, key, value) VALUES (1, 'PROJECT', 'Project');
 INSERT INTO msg_tag(message_id, key, value) VALUES (1, 'CONTRACT', 'Contract');
+
+INSERT INTO label(user_id, name) VALUES (1, 'INBOX');
+INSERT INTO label(user_id, name) VALUES (1, 'SNOOZED');
+INSERT INTO label(user_id, name) VALUES (1, 'SENT');
+INSERT INTO label(user_id, name) VALUES (1, 'DRAFTS');
+INSERT INTO label(user_id, name) VALUES (2, 'INBOX');
+INSERT INTO label(user_id, name) VALUES (2, 'SNOOZED');
+INSERT INTO label(user_id, name) VALUES (2, 'SENT');
+INSERT INTO label(user_id, name) VALUES (2, 'DRAFTS');
+
+INSERT INTO labels_messages(message_id, label_id) VALUES (1, 1);
+INSERT INTO labels_messages(message_id, label_id) VALUES (1, 2);
+INSERT INTO labels_messages(message_id, label_id) VALUES (2, 1);
+INSERT INTO labels_messages(message_id, label_id) VALUES (3, 3);
+INSERT INTO labels_messages(message_id, label_id) VALUES (4, 3);
+INSERT INTO labels_messages(message_id, label_id) VALUES (5, 5);
+INSERT INTO labels_messages(message_id, label_id) VALUES (6, 5);
+INSERT INTO labels_messages(message_id, label_id) VALUES (7, 7);
+INSERT INTO labels_messages(message_id, label_id) VALUES (8, 7);
