@@ -1,8 +1,10 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
@@ -48,7 +50,7 @@ public class Message {
     @JoinTable(name = "labels_messages",
             joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
-    private List<Label> labels;
+    private Set<Label> labels = new HashSet<>();
     
     @SequenceGenerator(name="messageTimelineId", sequenceName="message_timeline_id")
     @GeneratedValue(generator="messageTimelineId", strategy = GenerationType.SEQUENCE)
@@ -90,11 +92,11 @@ public class Message {
         this.tags = tags;
     }
 
-    public List<Label> getLabels() {
+    public Set<Label> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<Label> labels) {
+    public void setLabels(Set<Label> labels) {
         this.labels = labels;
     }
 

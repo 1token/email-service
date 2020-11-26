@@ -1,7 +1,9 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,7 +34,7 @@ public class User {
     private List<Account> accounts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Label> labels;
+    private Set<Label> labels = new HashSet<Label>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
@@ -62,11 +64,11 @@ public class User {
         this.accounts = accounts;
     }
 
-    public List<Label> getLabels() {
+    public Set<Label> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<Label> labels) {
+    public void setLabels(Set<Label> labels) {
         this.labels = labels;
     }
 }

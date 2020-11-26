@@ -2,6 +2,7 @@ package org.acme.emailservice.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class Label {
 
     @ManyToMany(mappedBy = "labels")
     @JsonbTransient
-    private List<Message> message;
+    private Set<Message> message;
 
     private String name;
 
@@ -68,11 +69,11 @@ public class Label {
         this.name = name;
     }
 
-    public List<Message> getMessage() {
+    public Set<Message> getMessage() {
         return message;
     }
 
-    public void setMessage(List<Message> message) {
+    public void setMessage(Set<Message> message) {
         this.message = message;
     }
 
