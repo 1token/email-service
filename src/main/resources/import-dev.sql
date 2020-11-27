@@ -17,10 +17,10 @@ ALTER TABLE public.label ALTER COLUMN history_id SET DEFAULT NEXTVAL('label_hist
 INSERT INTO user_(username) VALUES ('igor@acme.org');
 INSERT INTO user_(username) VALUES ('mike@acme.org');
 
-INSERT INTO account(user_id, name) VALUES (1, 'izboran@gmail.com');
-INSERT INTO account(user_id, name) VALUES (1, 'izboran@hotmail.com');
-INSERT INTO account(user_id, name) VALUES (2, 'mike@gmail.com');
-INSERT INTO account(user_id, name) VALUES (2, 'mike@hotmail.com');
+INSERT INTO account(user_id, display_name, username) VALUES (1, 'Igor Zboran', 'izboran@gmail.com');
+INSERT INTO account(user_id, display_name, username) VALUES (1, 'Igor Zboran', 'izboran@hotmail.com');
+INSERT INTO account(user_id, username) VALUES (2, 'mike@gmail.com');
+INSERT INTO account(user_id, username) VALUES (2, 'mike@hotmail.com');
 
 INSERT INTO message(account_id, subject) VALUES (1, 'Hello!');
 INSERT INTO message(account_id, subject) VALUES (1, 'Hello again!');

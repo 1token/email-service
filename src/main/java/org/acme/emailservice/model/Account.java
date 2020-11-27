@@ -1,7 +1,9 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
@@ -21,7 +23,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "account")
-@NamedQuery(name = "Account.getAll", query = "SELECT a FROM Account a ORDER BY a.name")
+@NamedQuery(name = "Account.getAll", query = "SELECT a FROM Account a ORDER BY a.username")
 public class Account {
 
     @Id
@@ -33,11 +35,14 @@ public class Account {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private  User user;
 
-    @Column(nullable = false, updatable = false)
-    private String name;
+    @Column(unique = false, nullable = true)
+    private String displayName;
+
+    @Column(name = "username", updatable = false, unique = true, nullable = false)
+    private String username;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Message> messages;
+    private Set<Message> messages = new HashSet<Message>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
@@ -51,19 +56,27 @@ public class Account {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    public List<Message> getMessages() {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Message> messages) {
+    public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
 }
