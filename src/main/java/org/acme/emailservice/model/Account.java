@@ -38,7 +38,7 @@ public class Account {
     @Column(unique = false, nullable = true)
     private String displayName;
 
-    @Column(name = "username", updatable = false, unique = true, nullable = false)
+    @Column(updatable = false, unique = true, nullable = false)
     private String username;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
