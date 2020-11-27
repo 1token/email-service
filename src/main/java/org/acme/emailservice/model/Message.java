@@ -44,6 +44,18 @@ public class Message {
     private String subject;
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RecipientTo> recipientsTo;
+
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RecipientCc> recipientsCc;
+
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RecipientBcc> recipientsBcc;
+
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Attachment> attachments;
+
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tag> tags;
 
     @ManyToMany()
@@ -82,6 +94,38 @@ public class Message {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public List<RecipientTo> getRecipientsTo() {
+        return recipientsTo;
+    }
+
+    public void setRecipientsTo(List<RecipientTo> recipientsTo) {
+        this.recipientsTo = recipientsTo;
+    }
+
+    public List<RecipientCc> getRecipientsCc() {
+        return recipientsCc;
+    }
+
+    public void setRecipientsCc(List<RecipientCc> recipientsCc) {
+        this.recipientsCc = recipientsCc;
+    }
+
+    public List<RecipientBcc> getRecipientsBcc() {
+        return recipientsBcc;
+    }
+
+    public void setRecipientsBcc(List<RecipientBcc> recipientsBcc) {
+        this.recipientsBcc = recipientsBcc;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     public List<Tag> getTags() {

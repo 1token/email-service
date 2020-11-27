@@ -53,3 +53,15 @@ INSERT INTO labels_messages(message_id, label_id) VALUES (5, 5);
 INSERT INTO labels_messages(message_id, label_id) VALUES (6, 5);
 INSERT INTO labels_messages(message_id, label_id) VALUES (7, 7);
 INSERT INTO labels_messages(message_id, label_id) VALUES (8, 7);
+
+INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (1, 'John Doe', 'jdoe@acme.org');
+INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (1, 'Mary Doe', 'mdoe@acme.org');
+INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (2, 'Theo Brown', 'tbrown@acme.org');
+INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (5, 'Alice Williams', 'awilliams@acme.org');
+INSERT INTO msg_recipient_cc(message_id, fullname, email_address) VALUES (1, 'Theo Brown', 'tbrown@acme.org');
+INSERT INTO msg_recipient_bcc(message_id, fullname, email_address) VALUES (2, 'Alice Williams', 'awilliams@acme.org');
+
+INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (1, 'Contract.pdf', 'application/pdf');
+INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (1, 'Template.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (2, 'Invoice.pdf', 'application/pdf');
+INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (5, 'Forecast.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
