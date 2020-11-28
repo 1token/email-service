@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,37 +24,30 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
-@Table(name = "label")
-@NamedQuery(name = "Label.getAll", query = "SELECT l FROM Label l ORDER BY l.name")
-public class Label {
+@Table(name = "filter")
+@NamedQuery(name = "Filter.getAll", query = "SELECT f FROM Filter f ORDER BY f.name")
+public class Filter {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = true)
-    private Label parent;
-
-    @OneToMany(mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<Label> child = new HashSet<>();
-
-    @ManyToOne()
+    /* @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private  User user;
 
-    @ManyToMany(mappedBy = "labels")
+    @ManyToMany(mappedBy = "filters")
     @JsonbTransient
-    private Set<Message> messages;
+    private Set<Label> labels; */
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = true)
-    private int color;
+    private String criteria;
 
-    @SequenceGenerator(name="labelHistoryId", sequenceName="label_history_id")
+    /* @SequenceGenerator(name="labelHistoryId", sequenceName="label_history_id")
     @GeneratedValue(generator="labelHistoryId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
@@ -65,7 +57,7 @@ public class Label {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+	private Date timestamp; */
 
     public Long getId() {
         return id;
@@ -73,22 +65,6 @@ public class Label {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<Label> getChild() {
-        return child;
-    }
-
-    public void setChild(Set<Label> child) {
-        this.child = child;
-    }
-
-    public Label getParent() {
-        return parent;
-    }
-
-    public void setParent(Label parent) {
-        this.parent = parent;
     }
 
     public String getName() {
@@ -99,20 +75,20 @@ public class Label {
         this.name = name;
     }
 
-    public int getColor() {
-        return color;
+    public String getCriteria() {
+        return criteria;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setCriteria(String criteria) {
+        this.criteria = criteria;
     }
 
-    public Set<Message> getMessage() {
-        return messages;
+    /* public Set<Label> getLabel() {
+        return labels;
     }
 
-    public void setMessage(Set<Message> messages) {
-        this.messages = messages;
+    public void setLabel(Set<Label> labels) {
+        this.labels = labels;
     }
 
     public Long getHistoryId() {
@@ -129,5 +105,5 @@ public class Label {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
-    }
+    } */
 }
