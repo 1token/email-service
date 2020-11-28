@@ -44,6 +44,9 @@ public class Filter {
     @Column(nullable = true)
     private String criteria;
 
+    @Column(columnDefinition = "jsonb", nullable = true) // h2/json (or run CREATE TYPE "JSONB" AS json;), postgresql/jsonb
+    private String action;
+
     @SequenceGenerator(name="filterHistoryId", sequenceName="filter_history_id")
     @GeneratedValue(generator="filterHistoryId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
@@ -78,6 +81,14 @@ public class Filter {
 
     public void setCriteria(String criteria) {
         this.criteria = criteria;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public Set<Label> getLabel() {
