@@ -1,14 +1,11 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,14 +29,14 @@ public class Filter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* @ManyToOne()
+    @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private  User user;
 
     @ManyToMany(mappedBy = "filters")
     @JsonbTransient
-    private Set<Label> labels; */
+    private Set<Label> labels;
 
     @Column(nullable = false)
     private String name;
@@ -47,8 +44,8 @@ public class Filter {
     @Column(nullable = true)
     private String criteria;
 
-    /* @SequenceGenerator(name="labelHistoryId", sequenceName="label_history_id")
-    @GeneratedValue(generator="labelHistoryId", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="filterHistoryId", sequenceName="filter_history_id")
+    @GeneratedValue(generator="filterHistoryId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
     @Column(nullable = false)
@@ -57,7 +54,7 @@ public class Filter {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp; */
+	private Date timestamp;
 
     public Long getId() {
         return id;
@@ -83,7 +80,7 @@ public class Filter {
         this.criteria = criteria;
     }
 
-    /* public Set<Label> getLabel() {
+    public Set<Label> getLabel() {
         return labels;
     }
 
@@ -105,5 +102,5 @@ public class Filter {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
-    } */
+    }
 }

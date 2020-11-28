@@ -5,6 +5,9 @@ DROP SEQUENCE IF EXISTS message_history_id;
 CREATE SEQUENCE IF NOT EXISTS message_history_id;
 DROP SEQUENCE IF EXISTS label_history_id;
 CREATE SEQUENCE IF NOT EXISTS label_history_id;
+DROP SEQUENCE IF EXISTS filter_history_id;
+CREATE SEQUENCE IF NOT EXISTS filter_history_id;
+
 
 ALTER TABLE public.message ALTER COLUMN timeline_id SET NOT NULL;
 ALTER TABLE public.message ALTER COLUMN timeline_id SET DEFAULT NEXTVAL('message_timeline_id');
@@ -12,6 +15,8 @@ ALTER TABLE public.message ALTER COLUMN history_id SET NOT NULL;
 ALTER TABLE public.message ALTER COLUMN history_id SET DEFAULT NEXTVAL('message_history_id');
 ALTER TABLE public.label ALTER COLUMN history_id SET NOT NULL;
 ALTER TABLE public.label ALTER COLUMN history_id SET DEFAULT NEXTVAL('label_history_id');
+ALTER TABLE public.filter ALTER COLUMN history_id SET NOT NULL;
+ALTER TABLE public.filter ALTER COLUMN history_id SET DEFAULT NEXTVAL('filter_history_id');
 
 -- Data
 INSERT INTO user_(username) VALUES ('igor@acme.org');
@@ -43,6 +48,9 @@ INSERT INTO label(user_id, name) VALUES (2, 'INBOX');
 INSERT INTO label(user_id, name) VALUES (2, 'SNOOZED');
 INSERT INTO label(user_id, name) VALUES (2, 'SENT');
 INSERT INTO label(user_id, name) VALUES (2, 'DRAFTS');
+INSERT INTO label(user_id, name) VALUES (1, 'Invoices');
+INSERT INTO label(user_id, parent_id, name) VALUES (1, 9, 'O2');
+INSERT INTO label(user_id, parent_id, name) VALUES (1, 9, 'Orange');
 
 INSERT INTO labels_messages(message_id, label_id) VALUES (1, 1);
 INSERT INTO labels_messages(message_id, label_id) VALUES (1, 2);
@@ -65,3 +73,9 @@ INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (1, 'Contract.
 INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (1, 'Template.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (2, 'Invoice.pdf', 'application/pdf');
 INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (5, 'Forecast.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+INSERT INTO filter(user_id, name) VALUES (1, 'O2 Invoice');
+INSERT INTO filter(user_id, name) VALUES (1, 'Orange Invoice');
+
+INSERT INTO filters_labels(label_id, filter_id) VALUES (10, 1);
+INSERT INTO filters_labels(label_id, filter_id) VALUES (11, 2);

@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -54,6 +55,12 @@ public class Label {
 
     @Column(nullable = true)
     private int color;
+
+    @ManyToMany()
+    @JoinTable(name = "filters_labels",
+            joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "filter_id", referencedColumnName = "id"))
+    private Set<Filter> filters = new HashSet<>();
 
     @SequenceGenerator(name="labelHistoryId", sequenceName="label_history_id")
     @GeneratedValue(generator="labelHistoryId", strategy = GenerationType.SEQUENCE)
@@ -113,6 +120,14 @@ public class Label {
 
     public void setMessage(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<Filter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(Set<Filter> filters) {
+        this.filters = filters;
     }
 
     public Long getHistoryId() {
