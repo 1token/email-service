@@ -36,19 +36,19 @@ INSERT INTO message(account_id, subject) VALUES (3, 'Hola de nuevo!');
 INSERT INTO message(account_id, subject) VALUES (4, 'Bonjour!');
 INSERT INTO message(account_id, subject) VALUES (4, 'Rebonjour!');
 
-INSERT INTO msg_tag(message_id, key, value) VALUES (1, 'INVOICE', 'Invoice');
-INSERT INTO msg_tag(message_id, key, value) VALUES (1, 'PROJECT', 'Project');
-INSERT INTO msg_tag(message_id, key, value) VALUES (1, 'CONTRACT', 'Contract');
+INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Invoice', '{"roles":["INVOICE"]}');
+INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Project', '{"roles":["PROJECT"]}');
+INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Contract', '{"roles":["INVOICE", "TELCO"]}');
 
-INSERT INTO label(user_id, name) VALUES (1, 'INBOX');
-INSERT INTO label(user_id, name) VALUES (1, 'SNOOZED');
-INSERT INTO label(user_id, name) VALUES (1, 'SENT');
-INSERT INTO label(user_id, name) VALUES (1, 'DRAFTS');
-INSERT INTO label(user_id, name) VALUES (2, 'INBOX');
-INSERT INTO label(user_id, name) VALUES (2, 'SNOOZED');
-INSERT INTO label(user_id, name) VALUES (2, 'SENT');
-INSERT INTO label(user_id, name) VALUES (2, 'DRAFTS');
-INSERT INTO label(user_id, name) VALUES (1, 'Invoices');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Inbox', 'INBOX');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Snoozed', 'SNOOZED');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Sent', 'SENT');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Drafts', 'DRAFTS');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Inbox', 'INBOX');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Snoozed', 'SNOOZED');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Sent', 'SENT');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Drafts', 'DRAFTS');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Invoices', 'INVOICE');
 INSERT INTO label(user_id, parent_id, name) VALUES (1, 9, 'O2');
 INSERT INTO label(user_id, parent_id, name) VALUES (1, 9, 'Orange');
 
@@ -62,17 +62,17 @@ INSERT INTO labels_messages(message_id, label_id) VALUES (6, 5);
 INSERT INTO labels_messages(message_id, label_id) VALUES (7, 7);
 INSERT INTO labels_messages(message_id, label_id) VALUES (8, 7);
 
-INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (1, 'John Doe', 'jdoe@acme.org');
-INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (1, 'Mary Doe', 'mdoe@acme.org');
-INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (2, 'Theo Brown', 'tbrown@acme.org');
-INSERT INTO msg_recipient_to(message_id, fullname, email_address) VALUES (5, 'Alice Williams', 'awilliams@acme.org');
-INSERT INTO msg_recipient_cc(message_id, fullname, email_address) VALUES (1, 'Theo Brown', 'tbrown@acme.org');
-INSERT INTO msg_recipient_bcc(message_id, fullname, email_address) VALUES (2, 'Alice Williams', 'awilliams@acme.org');
+INSERT INTO msg_recipient_to(message_id, display_name, email_address) VALUES (1, 'John Doe', 'jdoe@acme.org');
+INSERT INTO msg_recipient_to(message_id, display_name, email_address) VALUES (1, 'Mary Doe', 'mdoe@acme.org');
+INSERT INTO msg_recipient_to(message_id, display_name, email_address) VALUES (2, 'Theo Brown', 'tbrown@acme.org');
+INSERT INTO msg_recipient_to(message_id, display_name, email_address) VALUES (5, 'Alice Williams', 'awilliams@acme.org');
+INSERT INTO msg_recipient_cc(message_id, display_name, email_address) VALUES (1, 'Theo Brown', 'tbrown@acme.org');
+INSERT INTO msg_recipient_bcc(message_id, display_name, email_address) VALUES (2, 'Alice Williams', 'awilliams@acme.org');
 
-INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (1, 'Contract.pdf', 'application/pdf');
-INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (1, 'Template.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (2, 'Invoice.pdf', 'application/pdf');
-INSERT INTO msg_attachment(message_id, filename, mimetype) VALUES (5, 'Forecast.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+INSERT INTO msg_attachment(message_id, filename, mimetype, resource_url) VALUES (1, 'Contract.pdf', 'application/pdf', 'http://localhost:7000/fEuVMDQ7ch5YEM8MKFWE');
+INSERT INTO msg_attachment(message_id, filename, mimetype, resource_url) VALUES (1, 'Template.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'http://localhost:7000/XyLDEnBSYV04hTxNJDN2');
+INSERT INTO msg_attachment(message_id, filename, mimetype, resource_url) VALUES (2, 'Invoice.pdf', 'application/pdf', 'http://localhost:7000/5FHOuZbh2eoCHjfqpIz9');
+INSERT INTO msg_attachment(message_id, filename, mimetype, resource_url) VALUES (5, 'Forecast.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'http://localhost:7000/GCn1P02tHIXf4j0NlGmL');
 
 INSERT INTO filter(user_id, name) VALUES (1, 'O2 Invoice');
 INSERT INTO filter(user_id, name) VALUES (1, 'Orange Invoice');

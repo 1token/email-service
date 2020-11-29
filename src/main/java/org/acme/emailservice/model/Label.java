@@ -53,6 +53,9 @@ public class Label {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = true) // ToDo enum
+    private String role;
+
     @Column(nullable = true)
     private int color;
 
@@ -104,6 +107,14 @@ public class Label {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getColor() {

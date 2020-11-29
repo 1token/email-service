@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "msg_tag")
-@NamedQuery(name = "Tag.getAll", query = "SELECT t FROM Tag t ORDER BY t.value")
+@NamedQuery(name = "Tag.getAll", query = "SELECT t FROM Tag t ORDER BY t.name")
 public class Tag {
 
     @Id
@@ -29,9 +29,11 @@ public class Tag {
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
     private  Message message;
     
-    private String key;
+    @Column(nullable = false)
+    private String name;
 
-    private String value;
+    @Column(columnDefinition = "jsonb", nullable = true)
+    private String attributes;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
@@ -45,19 +47,19 @@ public class Tag {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getValue() {
-        return value;
+    public String getAttributes() {
+        return attributes;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
     }
 }

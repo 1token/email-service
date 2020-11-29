@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "msg_recipient_to")
-@NamedQuery(name = "RecipientTo.getAll", query = "SELECT r FROM RecipientTo r ORDER BY r.fullname")
+@NamedQuery(name = "RecipientTo.getAll", query = "SELECT r FROM RecipientTo r ORDER BY r.displayName")
 public class RecipientTo {
     
     @Id
@@ -29,8 +29,10 @@ public class RecipientTo {
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
     private  Message message;
     
-    private String fullname;
+    @Column(nullable = true)
+    private String displayName;
 
+    @Column(nullable = false)
     private String emailAddress;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,12 +47,12 @@ public class RecipientTo {
         this.id = id;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmailAddress() {

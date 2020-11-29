@@ -29,9 +29,14 @@ public class Attachment {
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
     private  Message message;
     
+    @Column(nullable = false)
     private String filename;
 
+    @Column(nullable = false)
     private String mimetype;
+
+    @Column(nullable = false)
+    private String resourceUrl;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
@@ -59,5 +64,13 @@ public class Attachment {
 
     public void setMimetype(String mimetype) {
         this.mimetype = mimetype;
+    }
+
+    public String getResourceUrl() {
+        return resourceUrl;
+    }
+
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
     }
 }
