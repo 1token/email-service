@@ -38,7 +38,7 @@ public class Contact {
     @Column(nullable = true)
     private String lastName;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String emailAddress;
 
     @SequenceGenerator(name="filterHistoryId", sequenceName="filter_history_id")

@@ -79,3 +79,8 @@ INSERT INTO filter(user_id, name) VALUES (1, 'Orange Invoice');
 
 INSERT INTO filters_labels(label_id, filter_id) VALUES (10, 1);
 INSERT INTO filters_labels(label_id, filter_id) VALUES (11, 2);
+
+INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'Mary', 'Doe', 'jdoe@acme.org');
+INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'John', 'Doe', 'mdoe@acme.org');
+INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'Theo', 'Brown', 'tbrown@acme.org');
+INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (2, 'Alice', '', 'awilliams@acme.org');
