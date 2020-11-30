@@ -22,10 +22,10 @@ ALTER TABLE public.filter ALTER COLUMN history_id SET DEFAULT NEXTVAL('filter_hi
 INSERT INTO user_(username) VALUES ('igor@acme.org');
 INSERT INTO user_(username) VALUES ('mike@acme.org');
 
-INSERT INTO account(user_id, display_name, username) VALUES (1, 'Igor Zboran', 'izboran@gmail.com');
-INSERT INTO account(user_id, display_name, username) VALUES (1, 'Igor Zboran', 'izboran@hotmail.com');
-INSERT INTO account(user_id, username) VALUES (2, 'mike@gmail.com');
-INSERT INTO account(user_id, username) VALUES (2, 'mike@hotmail.com');
+INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@gmail.com', 'Igor Zboran (GMail)', 'izboran@gmail.com');
+INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@hotmail.com', 'Igor Zboran (Hotmail)', 'izboran@hotmail.com');
+INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@gmail.com', 'mike@gmail.com');
+INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@hotmail.com', 'mike@hotmail.com');
 
 INSERT INTO message(account_id, subject) VALUES (1, 'Hello!');
 INSERT INTO message(account_id, subject) VALUES (1, 'Hello again!');

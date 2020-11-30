@@ -37,6 +37,9 @@ public class Account {
     @Column(unique = false, nullable = true)
     private String displayName;
 
+    @Column(unique = true, nullable = false)
+    private String emailAddress;
+
     @Column(updatable = false, unique = true, nullable = false)
     private String username;
 
@@ -79,6 +82,14 @@ public class Account {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getUsername() {
