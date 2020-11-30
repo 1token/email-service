@@ -42,9 +42,11 @@ public class Message {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private  Account account;
 
-    @JsonbTransient
-    @Column(columnDefinition = "jsonb", nullable = false)
+    @Column(nullable = false)
     private String messageId;
+
+    @Column(nullable = true)
+    private String threadId;
 
     @JsonbTransient
     @Column(columnDefinition = "jsonb", nullable = true)
@@ -130,6 +132,14 @@ public class Message {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    public String getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
     }
 
     public String getInReplyTo() {
