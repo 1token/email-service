@@ -51,7 +51,7 @@ public class Message {
     private String InReplyTo;
 
     @JsonbTransient
-    @Column(columnDefinition = "jsonb", nullable = true)
+    @Column(name = "\"references\"", columnDefinition = "jsonb", nullable = true)
     private String references;
 
     @JsonbTransient
