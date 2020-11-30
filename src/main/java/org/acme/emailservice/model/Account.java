@@ -64,6 +64,9 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Message> messages = new HashSet<Message>();
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ResourceServer> resourceServers = new HashSet<ResourceServer>();
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
 	private Date timestamp;
@@ -170,5 +173,13 @@ public class Account {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<ResourceServer> getResourceServers() {
+        return resourceServers;
+    }
+
+    public void setResourceServers(Set<ResourceServer> resourceServers) {
+        this.resourceServers = resourceServers;
     }
 }

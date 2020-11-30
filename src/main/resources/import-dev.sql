@@ -7,6 +7,10 @@ DROP SEQUENCE IF EXISTS label_history_id;
 CREATE SEQUENCE IF NOT EXISTS label_history_id;
 DROP SEQUENCE IF EXISTS filter_history_id;
 CREATE SEQUENCE IF NOT EXISTS filter_history_id;
+DROP SEQUENCE IF EXISTS contact_history_id;
+CREATE SEQUENCE IF NOT EXISTS contact_history_id;
+DROP SEQUENCE IF EXISTS resource_server_history_id;
+CREATE SEQUENCE IF NOT EXISTS resource_server_history_id;
 
 
 ALTER TABLE public.message ALTER COLUMN timeline_id SET NOT NULL;
@@ -17,6 +21,10 @@ ALTER TABLE public.label ALTER COLUMN history_id SET NOT NULL;
 ALTER TABLE public.label ALTER COLUMN history_id SET DEFAULT NEXTVAL('label_history_id');
 ALTER TABLE public.filter ALTER COLUMN history_id SET NOT NULL;
 ALTER TABLE public.filter ALTER COLUMN history_id SET DEFAULT NEXTVAL('filter_history_id');
+ALTER TABLE public.contact ALTER COLUMN history_id SET NOT NULL;
+ALTER TABLE public.contact ALTER COLUMN history_id SET DEFAULT NEXTVAL('contact_history_id');
+ALTER TABLE public.resource_server ALTER COLUMN history_id SET NOT NULL;
+ALTER TABLE public.resource_server ALTER COLUMN history_id SET DEFAULT NEXTVAL('resource_server_history_id');
 
 -- Data
 INSERT INTO user_(username) VALUES ('igor@acme.org');
@@ -100,3 +108,7 @@ INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'M
 INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'John', 'Doe', 'mdoe@acme.org');
 INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'Theo', 'Brown', 'tbrown@acme.org');
 INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (2, 'Alice', '', 'awilliams@acme.org');
+
+INSERT INTO resource_server(account_id, name, role, url) VALUES (1, 'Personal', 'CATEGORY_PERSONAL', 'http://localhost:7000');
+INSERT INTO resource_server(account_id, name, role, url) VALUES (1, 'Business', 'CATEGORY_BUSINESS', 'http://localhost:7000');
+INSERT INTO resource_server(account_id, name, role, url) VALUES (1, 'My healthcare', 'CATEGORY_HEALTHCARE', 'http://localhost:8000');
