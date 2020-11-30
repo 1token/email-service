@@ -51,6 +51,22 @@ INSERT INTO label(user_id, name, role) VALUES (2, 'Drafts', 'DRAFTS');
 INSERT INTO label(user_id, name, role) VALUES (1, 'Invoices', 'INVOICE');
 INSERT INTO label(user_id, parent_id, name) VALUES (1, 9, 'O2');
 INSERT INTO label(user_id, parent_id, name) VALUES (1, 9, 'Orange');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_PERSONAL');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_SOCIAL');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_PROMOTIONS');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_UPDATES');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_FORUMS');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_BUSINESS');
+INSERT INTO label(user_id, name, role) VALUES (1, 'Personal', 'CATEGORY_HEALTHCARE');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_PERSONAL');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_SOCIAL');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_PROMOTIONS');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_UPDATES');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_FORUMS');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_BUSINESS');
+INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_HEALTHCARE');
+
+
 
 INSERT INTO labels_messages(message_id, label_id) VALUES (1, 1);
 INSERT INTO labels_messages(message_id, label_id) VALUES (1, 2);

@@ -8,6 +8,8 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.acme.emailservice.model.enums.ELabelRole;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -53,8 +56,9 @@ public class Label {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = true) // ToDo enum
-    private String role;
+    private ELabelRole role;
 
     @Column(nullable = true)
     private int color;
@@ -109,11 +113,11 @@ public class Label {
         this.name = name;
     }
 
-    public String getRole() {
+    public ELabelRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(ELabelRole role) {
         this.role = role;
     }
 
