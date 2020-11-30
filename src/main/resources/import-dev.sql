@@ -27,14 +27,14 @@ INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, '
 INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@gmail.com', 'mike@gmail.com');
 INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@hotmail.com', 'mike@hotmail.com');
 
-INSERT INTO message(account_id, subject) VALUES (1, 'Hello!');
-INSERT INTO message(account_id, subject) VALUES (1, 'Hello again!');
-INSERT INTO message(account_id, subject) VALUES (2, 'Hi!');
-INSERT INTO message(account_id, subject) VALUES (2, 'Hi again!');
-INSERT INTO message(account_id, subject) VALUES (3, 'Holla!');
-INSERT INTO message(account_id, subject) VALUES (3, 'Hola de nuevo!');
-INSERT INTO message(account_id, subject) VALUES (4, 'Bonjour!');
-INSERT INTO message(account_id, subject) VALUES (4, 'Rebonjour!');
+INSERT INTO message(account_id, message_id, subject) VALUES (1, '{"messageId":"rnd1VLFLDzBJD66ePDc3"}', 'Hello again!');
+INSERT INTO message(account_id, message_id, subject) VALUES (1, '{"messageId":"YPRYxyEQtkGdwM4e9pvR"}', 'Hello!');
+INSERT INTO message(account_id, message_id, subject) VALUES (2, '{"messageId":"HydCfgcpHxB0dgcNOH8r"}', 'Hi!');
+INSERT INTO message(account_id, message_id, subject) VALUES (2, '{"messageId":"cw3rK7wGvQlvUFKuU6h3"}', 'Hi again!');
+INSERT INTO message(account_id, message_id, subject) VALUES (3, '{"messageId":"OGBeDkLxQwj6BcrDKJrr"}', 'Holla!');
+INSERT INTO message(account_id, message_id, subject) VALUES (3, '{"messageId":"bhxe7KY2jIuNx9BDUfL0"}', 'Hola de nuevo!');
+INSERT INTO message(account_id, message_id, subject) VALUES (4, '{"messageId":"7S6EY42zD3WgqtXPmSAF"}', 'Bonjour!');
+INSERT INTO message(account_id, message_id, subject) VALUES (4, '{"messageId":"Vg3iHbhbZa93uK1mtzNi"}', 'Rebonjour!');
 
 INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Invoice', '{"roles":["INVOICE"]}');
 INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Project', '{"roles":["PROJECT"]}');

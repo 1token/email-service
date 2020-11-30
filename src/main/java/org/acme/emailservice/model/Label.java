@@ -57,7 +57,7 @@ public class Label {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true) // ToDo enum
+    @Column(nullable = true)
     private ELabelRole role;
 
     @Column(nullable = true)

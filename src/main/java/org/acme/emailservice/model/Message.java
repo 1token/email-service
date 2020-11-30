@@ -1,5 +1,6 @@
 package org.acme.emailservice.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -41,8 +42,34 @@ public class Message {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private  Account account;
 
+    @JsonbTransient
+    @Column(columnDefinition = "jsonb", nullable = false)
+    private String messageId;
+
+    @JsonbTransient
+    @Column(columnDefinition = "jsonb", nullable = true)
+    private String InReplyTo;
+
+    @JsonbTransient
+    @Column(columnDefinition = "jsonb", nullable = true)
+    private String references;
+
+    @JsonbTransient
+    @Column(nullable = true)
+    private boolean fwd;
+
+    @Column(nullable = true)
     private String subject;
 
+    @Column(nullable = true)
+    private String snippet;
+
+    @Column(nullable = true)
+    private String resourceUrl;
+
+    @Column(nullable = true)
+    private String mimetype;
+    
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RecipientTo> recipientsTo;
 
@@ -57,6 +84,15 @@ public class Message {
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tag> tags;
+
+    @Column(nullable = true)
+    private LocalDateTime sentAt;
+
+    @Column(nullable = true)
+    private LocalDateTime receivedAt;
+
+    @Column(nullable = true)
+    private LocalDateTime snoozedAt;
 
     @ManyToMany()
     @JoinTable(name = "labels_messages",
@@ -88,12 +124,64 @@ public class Message {
         this.id = id;
     }
 
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    public String getInReplyTo() {
+        return InReplyTo;
+    }
+
+    public void setInReplyTo(String InReplyTo) {
+        this.InReplyTo = InReplyTo;
+    }
+
+    public String getReferences() {
+        return references;
+    }
+
+    public void setReferences(String references) {
+        this.references = references;
+    }
+
+    public boolean getFwd() {
+        return fwd;
+    }
+
+    public void setFwd(boolean fwd) {
+        this.fwd = fwd;
+    }
+
     public String getSubject() {
         return subject;
     }
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getSnippet() {
+        return snippet;
+    }
+
+    public void setSnippet(String snippet) {
+        this.snippet = snippet;
+    }
+
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype;
+    }
+
+    public String getResourceUrl() {
+        return resourceUrl;
+    }
+
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
     }
 
     public List<RecipientTo> getRecipientsTo() {
@@ -153,6 +241,30 @@ public class Message {
     public void addTag(final Tag tag) {
         tags.add(tag);
     } */
+
+    public LocalDateTime getSentAt() {
+        return sentAt;
+    }
+
+    public void setSentAt(LocalDateTime sentAt) {
+        this.sentAt = sentAt;
+    }
+
+    public LocalDateTime getReceivedAt() {
+        return receivedAt;
+    }
+
+    public void setReceivedAt(LocalDateTime receivedAt) {
+        this.receivedAt = receivedAt;
+    }
+
+    public LocalDateTime getSnoozedAt() {
+        return snoozedAt;
+    }
+
+    public void setSnoozedAt(LocalDateTime snoozedAt) {
+        this.snoozedAt = snoozedAt;
+    }
 
     public Long getTimelineId() {
         return timelineId;
