@@ -1,6 +1,7 @@
 package org.acme.emailservice.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -21,17 +22,26 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.jboss.logging.Logger;
 
 @Entity
 @Table(name = "message")
 @NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m ORDER BY m.timelineId DESC")
 public class Message {
+
+    private static Logger logger = Logger.getLogger(Message.class);
+
+    @Transient
+    private Message prevMessage;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +68,7 @@ public class Message {
 
     @JsonbTransient
     @Column(nullable = true)
-    private boolean fwd;
+    private Boolean fwd;
 
     @Column(nullable = true)
     private String subject;
@@ -116,7 +126,22 @@ public class Message {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+    private Date timestamp;
+    
+    @PostLoad
+    private void onPostLoad() {
+        prevMessage = new Message(this);
+        logger.info("[MESSAGE AUDIT] onPostLoad: " + prevMessage.attachments.size());
+    }
+
+    @PreUpdate
+    private void onPreUpdate() {
+        logger.info("[MESSAGE AUDIT] onPreUpdate: " + this.getId());
+    }
+
+    public Message(){
+
+    }
 
     public Long getId() {
         return id;
@@ -158,11 +183,11 @@ public class Message {
         this.references = references;
     }
 
-    public boolean getFwd() {
+    public Boolean getFwd() {
         return fwd;
     }
 
-    public void setFwd(boolean fwd) {
+    public void setFwd(Boolean fwd) {
         this.fwd = fwd;
     }
 
@@ -298,5 +323,14 @@ public class Message {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
+    }
+
+    public Message(Message original){
+        this.subject = original.getSubject();
+        this.snippet = original.getSnippet();
+        this.attachments = new ArrayList<Attachment>();
+        for (Attachment a : original.getAttachments()) {
+            this.attachments.add(new Attachment(a));
+        }
     }
 }

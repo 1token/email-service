@@ -46,18 +46,18 @@ public class Account {
     @Column(unique = false, nullable = true)
     private String imapAddr;
     @Column(unique = false, nullable = true)
-    private int imapPort;
+    private Integer imapPort;
     @Column(unique = false, nullable = true)
-    private int imapType;
+    private Integer imapType;
     @Column(unique = false, nullable = true)
     private String imapSecret;
 
     @Column(unique = false, nullable = true)
     private String smtpAddr;
     @Column(unique = false, nullable = true)
-    private int smtpPort;
+    private Integer smtpPort;
     @Column(unique = false, nullable = true)
-    private int smtpType;
+    private Integer smtpType;
     @Column(unique = false, nullable = true)
     private String smtpSecret;
 
@@ -111,19 +111,19 @@ public class Account {
         this.imapAddr = imapAddr;
     }
 
-    public int getImapPort() {
+    public Integer getImapPort() {
         return imapPort;
     }
 
-    public void setImapPort(int imapPort) {
+    public void setImapPort(Integer imapPort) {
         this.imapPort = imapPort;
     }
 
-    public int getImapType() {
+    public Integer getImapType() {
         return imapType;
     }
 
-    public void setImapType(int imapType) {
+    public void setImapType(Integer imapType) {
         this.imapType = imapType;
     }
 
@@ -143,19 +143,19 @@ public class Account {
         this.smtpAddr = smtpAddr;
     }
 
-    public int getSmtpPort() {
+    public Integer getSmtpPort() {
         return smtpPort;
     }
 
-    public void setSmtpPort(int smtpPort) {
+    public void setSmtpPort(Integer smtpPort) {
         this.smtpPort = smtpPort;
     }
 
-    public int getSmtpType() {
+    public Integer getSmtpType() {
         return smtpType;
     }
 
-    public void setSmtpType(int smtpType) {
+    public void setSmtpType(Integer smtpType) {
         this.smtpType = smtpType;
     }
 

@@ -61,7 +61,7 @@ public class Label {
     private ELabelRole role;
 
     @Column(nullable = true)
-    private int color;
+    private Integer color;
 
     @ManyToMany()
     @JoinTable(name = "filters_labels",
@@ -121,11 +121,11 @@ public class Label {
         this.role = role;
     }
 
-    public int getColor() {
+    public Integer getColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(Integer color) {
         this.color = color;
     }
 

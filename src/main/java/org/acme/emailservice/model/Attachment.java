@@ -40,7 +40,11 @@ public class Attachment {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+    private Date timestamp;
+    
+    public Attachment(){
+
+    }
 
     public Long getId() {
         return id;
@@ -72,5 +76,11 @@ public class Attachment {
 
     public void setResourceUrl(String resourceUrl) {
         this.resourceUrl = resourceUrl;
+    }
+
+    public Attachment(Attachment original){
+        this.filename = original.getFilename();
+        this.mimetype = original.getMimetype();
+        this.resourceUrl = original.getResourceUrl();
     }
 }
