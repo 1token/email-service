@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 // import java.util.Optional;
 import java.util.Set;
 
@@ -30,6 +31,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.acme.emailservice.exception.UpdateNotAllowedException;
 import org.hibernate.annotations.ColumnDefault;
 import org.jboss.logging.Logger;
 
@@ -41,7 +43,10 @@ public class Message {
     private static Logger logger = Logger.getLogger(Message.class);
 
     @Transient
-    private Message prevMessage;
+    // private Message prevMessage;
+    private LocalDateTime prevSentAt;
+    private int prevUpdateNotAllowedHashCode;
+    private int prevUpdateOnSentNotAllowedHashCode;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -130,13 +135,21 @@ public class Message {
     
     @PostLoad
     private void onPostLoad() {
-        prevMessage = new Message(this);
-        logger.info("[MESSAGE AUDIT] onPostLoad: " + prevMessage.attachments.size());
+        prevSentAt = this.sentAt;
+        prevUpdateNotAllowedHashCode = updateNotAllowedHashCode();
+        prevUpdateOnSentNotAllowedHashCode = updateOnSentNotAllowedHashCode();
     }
 
     @PreUpdate
-    private void onPreUpdate() {
-        logger.info("[MESSAGE AUDIT] onPreUpdate: " + this.getId());
+    private void onPreUpdate() throws UpdateNotAllowedException {
+        if (prevUpdateNotAllowedHashCode != updateNotAllowedHashCode()) {
+            throw new UpdateNotAllowedException("Update not allowed");
+        }
+        if (Objects.nonNull(prevSentAt)) {
+            if (prevUpdateOnSentNotAllowedHashCode != updateOnSentNotAllowedHashCode()) {
+                throw new UpdateNotAllowedException("Update on sent messages not allowed");
+            }    
+        }
     }
 
     public Message(){
@@ -333,4 +346,98 @@ public class Message {
             this.attachments.add(new Attachment(a));
         }
     }
+
+    public int updateNotAllowedHashCode() {
+        final int prime = 31;
+        int result = 1;
+        // result = prime * result + ((InReplyTo == null) ? 0 : InReplyTo.hashCode());
+        // result = prime * result + ((account == null) ? 0 : account.hashCode());
+        // result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
+        // result = prime * result + ((fwd == null) ? 0 : fwd.hashCode());
+        // result = prime * result + ((historyId == null) ? 0 : historyId.hashCode());
+        // result = prime * result + ((id == null) ? 0 : id.hashCode());
+        // result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+        // result = prime * result + ((lastStmt == null) ? 0 : lastStmt.hashCode());
+        result = prime * result + ((messageId == null) ? 0 : messageId.hashCode());
+        // result = prime * result + ((mimetype == null) ? 0 : mimetype.hashCode());
+        // result = prime * result + ((prevSentAt == null) ? 0 : prevSentAt.hashCode());
+        // result = prime * result + ((receivedAt == null) ? 0 : receivedAt.hashCode());
+        // result = prime * result + ((recipientsBcc == null) ? 0 : recipientsBcc.hashCode());
+        // result = prime * result + ((recipientsCc == null) ? 0 : recipientsCc.hashCode());
+        // result = prime * result + ((recipientsTo == null) ? 0 : recipientsTo.hashCode());
+        // result = prime * result + ((references == null) ? 0 : references.hashCode());
+        // result = prime * result + ((resourceUrl == null) ? 0 : resourceUrl.hashCode());
+        // result = prime * result + ((sentAt == null) ? 0 : sentAt.hashCode());
+        // result = prime * result + ((snippet == null) ? 0 : snippet.hashCode());
+        // result = prime * result + ((snoozedAt == null) ? 0 : snoozedAt.hashCode());
+        // result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        // result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+        // result = prime * result + ((threadId == null) ? 0 : threadId.hashCode());
+        // result = prime * result + ((timelineId == null) ? 0 : timelineId.hashCode());
+        // result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        return result;
+    }
+
+    public int updateOnSentNotAllowedHashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((InReplyTo == null) ? 0 : InReplyTo.hashCode());
+        result = prime * result + ((account == null) ? 0 : account.hashCode());
+        result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
+        result = prime * result + ((fwd == null) ? 0 : fwd.hashCode());
+        result = prime * result + ((historyId == null) ? 0 : historyId.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        // result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+        result = prime * result + ((lastStmt == null) ? 0 : lastStmt.hashCode());
+        result = prime * result + ((messageId == null) ? 0 : messageId.hashCode());
+        result = prime * result + ((mimetype == null) ? 0 : mimetype.hashCode());
+        result = prime * result + ((prevSentAt == null) ? 0 : prevSentAt.hashCode());
+        result = prime * result + ((receivedAt == null) ? 0 : receivedAt.hashCode());
+        result = prime * result + ((recipientsBcc == null) ? 0 : recipientsBcc.hashCode());
+        result = prime * result + ((recipientsCc == null) ? 0 : recipientsCc.hashCode());
+        result = prime * result + ((recipientsTo == null) ? 0 : recipientsTo.hashCode());
+        result = prime * result + ((references == null) ? 0 : references.hashCode());
+        result = prime * result + ((resourceUrl == null) ? 0 : resourceUrl.hashCode());
+        result = prime * result + ((sentAt == null) ? 0 : sentAt.hashCode());
+        result = prime * result + ((snippet == null) ? 0 : snippet.hashCode());
+        result = prime * result + ((snoozedAt == null) ? 0 : snoozedAt.hashCode());
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+        result = prime * result + ((threadId == null) ? 0 : threadId.hashCode());
+        result = prime * result + ((timelineId == null) ? 0 : timelineId.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        return result;
+    }
+
+    /* @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((InReplyTo == null) ? 0 : InReplyTo.hashCode());
+        result = prime * result + ((account == null) ? 0 : account.hashCode());
+        result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
+        result = prime * result + ((fwd == null) ? 0 : fwd.hashCode());
+        result = prime * result + ((historyId == null) ? 0 : historyId.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((labels == null) ? 0 : labels.hashCode());
+        result = prime * result + ((lastStmt == null) ? 0 : lastStmt.hashCode());
+        result = prime * result + ((messageId == null) ? 0 : messageId.hashCode());
+        result = prime * result + ((mimetype == null) ? 0 : mimetype.hashCode());
+        result = prime * result + ((prevSentAt == null) ? 0 : prevSentAt.hashCode());
+        result = prime * result + ((receivedAt == null) ? 0 : receivedAt.hashCode());
+        result = prime * result + ((recipientsBcc == null) ? 0 : recipientsBcc.hashCode());
+        result = prime * result + ((recipientsCc == null) ? 0 : recipientsCc.hashCode());
+        result = prime * result + ((recipientsTo == null) ? 0 : recipientsTo.hashCode());
+        result = prime * result + ((references == null) ? 0 : references.hashCode());
+        result = prime * result + ((resourceUrl == null) ? 0 : resourceUrl.hashCode());
+        result = prime * result + ((sentAt == null) ? 0 : sentAt.hashCode());
+        result = prime * result + ((snippet == null) ? 0 : snippet.hashCode());
+        result = prime * result + ((snoozedAt == null) ? 0 : snoozedAt.hashCode());
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+        result = prime * result + ((threadId == null) ? 0 : threadId.hashCode());
+        result = prime * result + ((timelineId == null) ? 0 : timelineId.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        return result;
+    } */
 }
