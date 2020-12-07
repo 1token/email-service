@@ -11,7 +11,7 @@ import org.acme.emailservice.model.Account;
 @ApplicationScoped
 public class AccountService {
 
-    @PersistenceContext(name="AccountDS")
+    @PersistenceContext
     EntityManager em;
 
     public Account getAccount(Long id){

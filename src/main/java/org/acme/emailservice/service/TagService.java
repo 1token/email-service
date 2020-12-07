@@ -12,7 +12,7 @@ import org.acme.emailservice.model.Tag;
 @ApplicationScoped
 public class TagService {
 
-    @PersistenceContext(name="TagDS")
+    @PersistenceContext
     EntityManager em;
 
     public Tag getTag(Long id){

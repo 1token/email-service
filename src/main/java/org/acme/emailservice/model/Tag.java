@@ -62,4 +62,12 @@ public class Tag {
     public void setAttributes(String attributes) {
         this.attributes = attributes;
     }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 }

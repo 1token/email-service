@@ -77,10 +77,4 @@ public class Attachment {
     public void setResourceUrl(String resourceUrl) {
         this.resourceUrl = resourceUrl;
     }
-
-    public Attachment(Attachment original){
-        this.filename = original.getFilename();
-        this.mimetype = original.getMimetype();
-        this.resourceUrl = original.getResourceUrl();
-    }
 }

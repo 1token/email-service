@@ -12,7 +12,7 @@ import org.acme.emailservice.model.User;
 @ApplicationScoped
 public class UserService {
     
-    @PersistenceContext(name="UserDS")
+    @PersistenceContext
     EntityManager em;
 
     public User getUser(Long id){
