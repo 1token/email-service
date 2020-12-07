@@ -1,5 +1,7 @@
 package org.acme.emailservice.service;
 
+import java.util.Collections;
+
 // import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -53,10 +55,13 @@ public class MessageService {
                     updateTimeline = true;
                     oldMessage.setSubject(newMessage.getSubject());
                 }
-                if (newMessage.getTags() != null) {
+                List<Tag> newTags = newMessage.getTags();
+                List<Tag> oldTags = oldMessage.getTags();
+                boolean tagEquals = newTags.containsAll(oldTags) && oldTags.containsAll(newTags);
+                if (newTags != null && !tagEquals) {
                     updateHistory = true;
                     updateTimeline = true;
-                    int deletedCount = em.createQuery("DELETE FROM Tag t WHERE t.message.id=:messageId")
+                    em.createQuery("DELETE FROM Tag t WHERE t.message.id=:messageId")
                     .setParameter("messageId", oldMessage.getId())
                     .executeUpdate();
                     for (Tag tag : newMessage.getTags()) {
