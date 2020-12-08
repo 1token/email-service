@@ -46,7 +46,7 @@ public class Message {
     @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
-    private  Account account;
+    private Account account;
 
     @Column(nullable = false)
     private String messageId;
@@ -77,7 +77,7 @@ public class Message {
 
     @Column(nullable = true)
     private String mimetype;
-    
+
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RecipientTo> recipientsTo;
 
@@ -104,17 +104,15 @@ public class Message {
     private LocalDateTime snoozedAt;
 
     @ManyToMany()
-    @JoinTable(name = "labels_messages",
-            joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
+    @JoinTable(name = "labels_messages", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
     private Set<Label> labels = new HashSet<>();
-    
-    @SequenceGenerator(name="messageTimelineId", sequenceName="message_timeline_id")
-    @GeneratedValue(generator="messageTimelineId", strategy = GenerationType.SEQUENCE)
+
+    @SequenceGenerator(name = "messageTimelineId", sequenceName = "message_timeline_id")
+    @GeneratedValue(generator = "messageTimelineId", strategy = GenerationType.SEQUENCE)
     private Long timelineId;
 
-    @SequenceGenerator(name="messageHistoryId", sequenceName="message_history_id")
-    @GeneratedValue(generator="messageHistoryId", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "messageHistoryId", sequenceName = "message_history_id")
+    @GeneratedValue(generator = "messageHistoryId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
     @Column(nullable = false)
@@ -125,12 +123,13 @@ public class Message {
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
     private Date timestamp;
 
-    public Message(){
+    public Message() {
 
     }
 
-    public void addTag(Tag tag){
-        if (tags == null) tags = new LinkedList<>();
+    public void addTag(Tag tag) {
+        if (tags == null)
+            tags = new LinkedList<>();
         tags.add(tag);
     }
 
@@ -258,15 +257,12 @@ public class Message {
         this.labels = labels;
     }
 
-    /* public Optional<Tag> getTag(final String key) {
-        return tags.stream()
-                .filter(tag -> tag.getKey().equals(key))
-                .findFirst();
-    }
-
-    public void addTag(final Tag tag) {
-        tags.add(tag);
-    } */
+    /*
+     * public Optional<Tag> getTag(final String key) { return tags.stream()
+     * .filter(tag -> tag.getKey().equals(key)) .findFirst(); }
+     * 
+     * public void addTag(final Tag tag) { tags.add(tag); }
+     */
 
     public LocalDateTime getSentAt() {
         return sentAt;

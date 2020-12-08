@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.acme.emailservice.exception.RecordNotFound;
 import org.acme.emailservice.model.Label;
 import org.acme.emailservice.model.Message;
 import org.acme.emailservice.model.Tag;
@@ -40,7 +41,7 @@ public class MessageService {
     }
 
     @Transactional
-    public Message updateOrCreate(Message newMessage) {
+    public Message updateOrCreate(Message newMessage) throws RecordNotFound {
         if (newMessage.getId() == null) {
             em.persist(newMessage);
             return newMessage;
@@ -48,9 +49,12 @@ public class MessageService {
             boolean updateHistory = false;
             boolean updateTimeline = false;
             Message oldMessage = em.find(Message.class, newMessage.getId());
+            if (oldMessage == null) {
+                throw new RecordNotFound("Message [" + newMessage.getId() + "] not found");
+            }
             // Set<Label> labelsOld = persistentMessage.getLabels();
             if (oldMessage.getSentAt() == null) {
-                if (newMessage.getSubject() != null) {
+                if (newMessage.getSubject() != null && (!oldMessage.getSubject().equals(newMessage.getSubject()))) {
                     updateHistory = true;
                     updateTimeline = true;
                     oldMessage.setSubject(newMessage.getSubject());
@@ -62,11 +66,10 @@ public class MessageService {
                     updateHistory = true;
                     updateTimeline = true;
                     em.createQuery("DELETE FROM Tag t WHERE t.message.id=:messageId")
-                    .setParameter("messageId", oldMessage.getId())
-                    .executeUpdate();
+                            .setParameter("messageId", oldMessage.getId()).executeUpdate();
                     for (Tag tag : newMessage.getTags()) {
                         tag.setMessage(oldMessage);
-                    }   
+                    }
                     oldMessage.setTags(newMessage.getTags());
                 }
             }

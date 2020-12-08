@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.acme.emailservice.exception.RecordNotFound;
 import org.acme.emailservice.model.Message;
 import org.acme.emailservice.service.MessageService;
 import org.eclipse.microprofile.graphql.GraphQLApi;
@@ -22,7 +23,7 @@ public class MessageEndpoint {
     }
 
     @Query
-    public Message getMessage(Long id){
+    public Message getMessage(Long id) {
         return messageService.getMessage(id);
     }
 
@@ -32,12 +33,12 @@ public class MessageEndpoint {
     }
 
     @Mutation
-    public Message updateMessage(Message message){
+    public Message updateMessage(Message message) throws RecordNotFound {
         return messageService.updateOrCreate(message);
     }
-    
+
     @Mutation
-    public Message deleteMessage(Long id){
+    public Message deleteMessage(Long id) {
         return messageService.delete(id);
     }
 }

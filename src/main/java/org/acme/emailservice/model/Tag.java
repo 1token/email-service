@@ -27,8 +27,8 @@ public class Tag {
     @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
-    private  Message message;
-    
+    private Message message;
+
     @Column(nullable = false)
     private String name;
 
@@ -37,7 +37,7 @@ public class Tag {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+    private Date timestamp;
 
     public Long getId() {
         return id;
