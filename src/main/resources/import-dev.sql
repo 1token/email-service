@@ -76,15 +76,15 @@ INSERT INTO label(user_id, name, role) VALUES (2, 'Personal', 'CATEGORY_HEALTHCA
 
 
 
-INSERT INTO labels_messages(message_id, label_id) VALUES (1, 1);
-INSERT INTO labels_messages(message_id, label_id) VALUES (1, 2);
-INSERT INTO labels_messages(message_id, label_id) VALUES (2, 1);
-INSERT INTO labels_messages(message_id, label_id) VALUES (3, 3);
-INSERT INTO labels_messages(message_id, label_id) VALUES (4, 3);
-INSERT INTO labels_messages(message_id, label_id) VALUES (5, 5);
-INSERT INTO labels_messages(message_id, label_id) VALUES (6, 5);
-INSERT INTO labels_messages(message_id, label_id) VALUES (7, 7);
-INSERT INTO labels_messages(message_id, label_id) VALUES (8, 7);
+INSERT INTO message_label(message_id, label_id) VALUES (1, 1);
+INSERT INTO message_label(message_id, label_id) VALUES (1, 2);
+INSERT INTO message_label(message_id, label_id) VALUES (2, 1);
+INSERT INTO message_label(message_id, label_id) VALUES (3, 3);
+INSERT INTO message_label(message_id, label_id) VALUES (4, 3);
+INSERT INTO message_label(message_id, label_id) VALUES (5, 5);
+INSERT INTO message_label(message_id, label_id) VALUES (6, 5);
+INSERT INTO message_label(message_id, label_id) VALUES (7, 7);
+INSERT INTO message_label(message_id, label_id) VALUES (8, 7);
 
 INSERT INTO msg_recipient_to(message_id, display_name, email_address) VALUES (1, 'John Doe', 'jdoe@acme.org');
 INSERT INTO msg_recipient_to(message_id, display_name, email_address) VALUES (1, 'Mary Doe', 'mdoe@acme.org');

@@ -40,6 +40,7 @@ public class MessageService {
         return (List<Message>) em.createNamedQuery("Message.getAll", Message.class).getResultList();
     }
 
+    // ToDo: User/Role for message, labels, ...
     @Transactional
     public Message updateOrCreate(Message newMessage) throws RecordNotFound {
         if (newMessage.getId() == null) {
@@ -52,12 +53,16 @@ public class MessageService {
             if (oldMessage == null) {
                 throw new RecordNotFound("Message [" + newMessage.getId() + "] not found");
             }
-            // Set<Label> labelsOld = persistentMessage.getLabels();
             if (oldMessage.getSentAt() == null) {
+                // Subject
                 if (newMessage.getSubject() != null && (!oldMessage.getSubject().equals(newMessage.getSubject()))) {
                     updateHistory = true;
                     updateTimeline = true;
                     oldMessage.setSubject(newMessage.getSubject());
+                }
+                // Tags
+                for (Tag tag : newMessage.getTags()) {
+                    tag.setMessage(oldMessage);
                 }
                 List<Tag> newTags = newMessage.getTags();
                 List<Tag> oldTags = oldMessage.getTags();
@@ -65,17 +70,23 @@ public class MessageService {
                 if (newTags != null && !tagEquals) {
                     updateHistory = true;
                     updateTimeline = true;
-                    em.createQuery("DELETE FROM Tag t WHERE t.message.id=:messageId")
-                            .setParameter("messageId", oldMessage.getId()).executeUpdate();
-                    for (Tag tag : newMessage.getTags()) {
-                        tag.setMessage(oldMessage);
-                    }
-                    oldMessage.setTags(newMessage.getTags());
+                    oldMessage.getTags().clear();
+                    oldMessage.getTags().addAll(newMessage.getTags());
                 }
             }
-            if (oldMessage.getLabels() != null && (!oldMessage.getLabels().equals(newMessage.getLabels()))) {
+            // Labels
+            Set<Label> newLabels = newMessage.getLabels();
+            Set<Label> oldLabels = oldMessage.getLabels();
+            boolean labelEquals = newLabels.containsAll(oldLabels) && oldLabels.containsAll(newLabels);
+            if (newLabels != null && !labelEquals) {
                 updateHistory = true;
-                oldMessage.setLabels(newMessage.getLabels());
+                oldMessage.getLabels().clear();
+                for (Label l : newMessage.getLabels()) {
+                    Label label = em.find(Label.class, l.getId());
+                    if (label != null) {
+                        oldMessage.addLabel(label);
+                    }
+                }
             }
             if (updateHistory) {
                 Long value = Long.parseLong(

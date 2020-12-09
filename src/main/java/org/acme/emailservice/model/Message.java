@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 // import java.util.Optional;
@@ -27,7 +28,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.jboss.logging.Logger;
@@ -90,9 +90,13 @@ public class Message {
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attachment> attachments;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Tag> tags;
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags = new ArrayList<>();
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "message_label", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
+    private Set<Label> labels = new LinkedHashSet<>();
 
     @Column(nullable = true)
     private LocalDateTime sentAt;
@@ -102,10 +106,6 @@ public class Message {
 
     @Column(nullable = true)
     private LocalDateTime snoozedAt;
-
-    @ManyToMany()
-    @JoinTable(name = "labels_messages", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
-    private Set<Label> labels = new HashSet<>();
 
     @SequenceGenerator(name = "messageTimelineId", sequenceName = "message_timeline_id")
     @GeneratedValue(generator = "messageTimelineId", strategy = GenerationType.SEQUENCE)
@@ -128,9 +128,23 @@ public class Message {
     }
 
     public void addTag(Tag tag) {
-        if (tags == null)
-            tags = new LinkedList<>();
         tags.add(tag);
+        tag.setMessage(this);
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
+        tag.setMessage(null);
+    }
+
+    public void addLabel(Label label) {
+        labels.add(label);
+        label.getMessages().add(this);
+    }
+
+    public void removeLabel(Label label) {
+        labels.remove(label);
+        label.getMessages().remove(this);
     }
 
     public Long getId() {
@@ -310,5 +324,21 @@ public class Message {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Message))
+            return false;
+
+        return id != null && id.equals(((Message) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

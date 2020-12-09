@@ -2,6 +2,7 @@ package org.acme.emailservice.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
@@ -32,7 +33,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "label")
 @NamedQuery(name = "Label.getAll", query = "SELECT l FROM Label l ORDER BY l.name")
 public class Label {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,11 +48,11 @@ public class Label {
     @ManyToOne()
     @JsonbTransient
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private  User user;
+    private User user;
 
     @ManyToMany(mappedBy = "labels")
     @JsonbTransient
-    private Set<Message> messages;
+    private Set<Message> messages = new LinkedHashSet<>();
 
     @Column(nullable = false)
     private String name;
@@ -64,13 +65,12 @@ public class Label {
     private Integer color;
 
     @ManyToMany()
-    @JoinTable(name = "filters_labels",
-            joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "filter_id", referencedColumnName = "id"))
-    private Set<Filter> filters = new HashSet<>();
+    @JoinTable(name = "filters_labels", joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "filter_id", referencedColumnName = "id"))
+    private Set<Filter> filters; // = new HashSet<>();
 
-    @SequenceGenerator(name="labelHistoryId", sequenceName="label_history_id")
-    @GeneratedValue(generator="labelHistoryId", strategy = GenerationType.SEQUENCE)
+    @Column(nullable = false)
+    @SequenceGenerator(name = "labelHistoryId", sequenceName = "label_history_id")
+    @GeneratedValue(generator = "labelHistoryId", strategy = GenerationType.SEQUENCE)
     private Long historyId;
 
     @Column(nullable = false)
@@ -79,7 +79,7 @@ public class Label {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+    private Date timestamp;
 
     public Long getId() {
         return id;
@@ -129,11 +129,11 @@ public class Label {
         this.color = color;
     }
 
-    public Set<Message> getMessage() {
+    public Set<Message> getMessages() {
         return messages;
     }
 
-    public void setMessage(Set<Message> messages) {
+    public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
 
@@ -159,5 +159,21 @@ public class Label {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Label))
+            return false;
+
+        return id != null && id.equals(((Label) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

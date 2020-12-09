@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonbTransient
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
     private Message message;
@@ -84,6 +85,7 @@ public class Tag {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+        result = prime * result + ((message == null) ? 0 : message.getId().hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -102,6 +104,11 @@ public class Tag {
                 return false;
         } else if (!attributes.equals(other.attributes))
             return false;
+        if (message == null) {
+            if (other.message != null)
+                return false;
+        } else if (!message.getId().equals(other.message.getId()))
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -109,4 +116,20 @@ public class Tag {
             return false;
         return true;
     }
+
+    /* @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Tag))
+            return false;
+
+        return id != null && id.equals(((Tag) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    } */
 }
