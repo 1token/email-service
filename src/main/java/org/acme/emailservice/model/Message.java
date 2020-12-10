@@ -3,11 +3,8 @@ package org.acme.emailservice.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
-// import java.util.Optional;
 import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
@@ -270,13 +267,6 @@ public class Message {
     public void setLabels(Set<Label> labels) {
         this.labels = labels;
     }
-
-    /*
-     * public Optional<Tag> getTag(final String key) { return tags.stream()
-     * .filter(tag -> tag.getKey().equals(key)) .findFirst(); }
-     * 
-     * public void addTag(final Tag tag) { tags.add(tag); }
-     */
 
     public LocalDateTime getSentAt() {
         return sentAt;
