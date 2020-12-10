@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,10 +25,10 @@ public class RecipientTo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonbTransient
     @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
-    private  Message message;
+    private Message message;
     
     @Column(nullable = true)
     private String displayName;
@@ -62,4 +63,73 @@ public class RecipientTo {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
+        result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
+        result = prime * result + ((message == null) ? 0 : message.getId().hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RecipientTo other = (RecipientTo) obj;
+        if (displayName == null) {
+            if (other.displayName != null)
+                return false;
+        } else if (!displayName.equals(other.displayName))
+            return false;
+        if (emailAddress == null) {
+            if (other.emailAddress != null)
+                return false;
+        } else if (!emailAddress.equals(other.emailAddress))
+            return false;
+        if (message == null) {
+            if (other.message != null)
+                return false;
+        } else if (!message.getId().equals(other.message.getId()))
+            return false;
+        return true;
+    }
+
+    /* @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof RecipientTo))
+            return false;
+
+        return id != null && id.equals(((RecipientTo) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    } */
 }

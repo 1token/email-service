@@ -75,17 +75,17 @@ public class Message {
     @Column(nullable = true)
     private String mimetype;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RecipientTo> recipientsTo;
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipientTo> recipientsTo = new ArrayList<>();
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RecipientCc> recipientsCc;
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipientCc> recipientsCc = new ArrayList<>();
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RecipientBcc> recipientsBcc;
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipientBcc> recipientsBcc = new ArrayList<>();
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Attachment> attachments;
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attachment> attachments = new ArrayList<>();
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tag> tags = new ArrayList<>();
@@ -121,6 +121,46 @@ public class Message {
 
     public Message() {
 
+    }
+
+    public void addRecipientTo(RecipientTo recipientTo) {
+        recipientsTo.add(recipientTo);
+        recipientTo.setMessage(this);
+    }
+
+    public void removeRecipientTo(RecipientTo recipientTo) {
+        recipientsTo.remove(recipientTo);
+        recipientTo.setMessage(null);
+    }
+
+    public void addRecipientCc(RecipientCc recipientCc) {
+        recipientsCc.add(recipientCc);
+        recipientCc.setMessage(this);
+    }
+
+    public void removeRecipientCc(RecipientCc recipientCc) {
+        recipientsCc.remove(recipientCc);
+        recipientCc.setMessage(null);
+    }
+
+    public void addRecipientBcc(RecipientBcc recipientBcc) {
+        recipientsBcc.add(recipientBcc);
+        recipientBcc.setMessage(this);
+    }
+
+    public void removeRecipientBcc(RecipientBcc recipientBcc) {
+        recipientsBcc.remove(recipientBcc);
+        recipientBcc.setMessage(null);
+    }
+
+    public void addAttachment(Attachment attachment) {
+        attachments.add(attachment);
+        attachment.setMessage(this);
+    }
+
+    public void removeAttachment(Attachment attachment) {
+        attachments.remove(attachment);
+        attachment.setMessage(null);
     }
 
     public void addTag(Tag tag) {
