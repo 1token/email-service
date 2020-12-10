@@ -2,6 +2,7 @@ package org.acme.emailservice.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -29,21 +30,61 @@ public class User {
     @Column(nullable = false, updatable = false)
     private String username;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Account> accounts = new HashSet<Account>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Account> accounts = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Label> labels = new HashSet<Label>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Label> labels = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Filter> filters = new HashSet<Filter>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Filter> filters = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Contact> contacts = new HashSet<Contact>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Contact> contacts = new LinkedHashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+    private Date timestamp;
+    
+    public void addAccount(Account account) {
+        accounts.add(account);
+        account.setUser(this);
+    }
+
+    public void removeAccount(Account account) {
+        accounts.remove(account);
+        account.setUser(null);
+    }
+
+    public void addLabel(Label label) {
+        labels.add(label);
+        label.setUser(this);
+    }
+
+    public void removeLabel(Label label) {
+        labels.remove(label);
+        label.setUser(null);
+    }
+
+    public void addFilter(Filter filter) {
+        filters.add(filter);
+        filter.setUser(this);
+    }
+
+    public void removeFilter(Filter filter) {
+        filters.remove(filter);
+        filter.setUser(null);
+    }
+
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+        contact.setUser(this);
+    }
+
+    public void removeContact(Contact contact) {
+        contacts.remove(contact);
+        contact.setUser(null);
+    }
 
     public Long getId() {
         return id;
@@ -91,5 +132,29 @@ public class User {
 
     public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof User))
+            return false;
+
+        return id != null && id.equals(((User) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

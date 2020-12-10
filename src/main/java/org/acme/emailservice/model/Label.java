@@ -43,9 +43,9 @@ public class Label {
     private Label parent;
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<Label> child = new HashSet<>();
+    private Set<Label> child = new LinkedHashSet<>();
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonbTransient
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
@@ -159,6 +159,22 @@ public class Label {
 
     public void setLastStmt(Byte lastStmt) {
         this.lastStmt = lastStmt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
