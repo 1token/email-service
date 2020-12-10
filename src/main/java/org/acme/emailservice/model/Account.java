@@ -1,7 +1,7 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
@@ -61,15 +61,35 @@ public class Account {
     @Column(unique = false, nullable = true)
     private String smtpSecret;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Message> messages = new HashSet<Message>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Message> messages = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ResourceServer> resourceServers = new HashSet<ResourceServer>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ResourceServer> resourceServers = new LinkedHashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
-	private Date timestamp;
+    private Date timestamp;
+    
+    public void addMessage(Message message) {
+        messages.add(message);
+        message.setAccount(this);
+    }
+
+    public void removeMessage(Message message) {
+        messages.remove(message);
+        message.setAccount(null);
+    }
+
+    public void addResourceServer(ResourceServer resourceServer) {
+        resourceServers.add(resourceServer);
+        resourceServer.setAccount(this);
+    }
+
+    public void removeResourceServer(ResourceServer resourceServer) {
+        resourceServers.remove(resourceServer);
+        resourceServer.setAccount(null);
+    }
 
     public Long getId() {
         return id;

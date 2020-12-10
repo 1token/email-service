@@ -38,11 +38,11 @@ public class Label {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = true)
     private Label parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Label> child = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -80,6 +80,17 @@ public class Label {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
     private Date timestamp;
+
+    // ToDo: cyclic - be aware
+    /* public void addChild(Label child) {
+        parent.add(child);
+        child.setParent(this);
+    }
+
+    public void removeChild(Label child) {
+        parent.remove(child);
+        child.setParent(null);
+    } */
 
     public Long getId() {
         return id;
