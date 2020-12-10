@@ -91,7 +91,6 @@ public class Message {
     private List<Tag> tags = new ArrayList<>();
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    // @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "message_label", joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
     private Set<Label> labels = new LinkedHashSet<>();
 

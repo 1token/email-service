@@ -101,8 +101,8 @@ INSERT INTO msg_attachment(message_id, filename, mimetype, resource_url) VALUES 
 INSERT INTO filter(user_id, name) VALUES (1, 'O2 Invoice');
 INSERT INTO filter(user_id, name) VALUES (1, 'Orange Invoice');
 
-INSERT INTO filters_labels(label_id, filter_id) VALUES (10, 1);
-INSERT INTO filters_labels(label_id, filter_id) VALUES (11, 2);
+INSERT INTO filter_label(filter_id, label_id) VALUES (1, 10);
+INSERT INTO filter_label(filter_id, label_id) VALUES (2, 11);
 
 INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'Mary', 'Doe', 'jdoe@acme.org');
 INSERT INTO contact(user_id, first_name, last_name, email_address) VALUES (1, 'John', 'Doe', 'mdoe@acme.org');

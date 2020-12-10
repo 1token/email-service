@@ -54,6 +54,10 @@ public class Label {
     @JsonbTransient
     private Set<Message> messages = new LinkedHashSet<>();
 
+    @ManyToMany(mappedBy = "labels")
+    @JsonbTransient
+    private Set<Filter> filters = new LinkedHashSet<>();
+
     @Column(nullable = false)
     private String name;
 
@@ -63,10 +67,6 @@ public class Label {
 
     @Column(nullable = true)
     private Integer color;
-
-    @ManyToMany()
-    @JoinTable(name = "filters_labels", joinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "filter_id", referencedColumnName = "id"))
-    private Set<Filter> filters; // = new HashSet<>();
 
     @Column(nullable = false)
     @SequenceGenerator(name = "labelHistoryId", sequenceName = "label_history_id")
