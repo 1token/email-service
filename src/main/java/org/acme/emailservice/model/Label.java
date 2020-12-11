@@ -1,7 +1,6 @@
 package org.acme.emailservice.model;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -43,7 +41,7 @@ public class Label {
     private Label parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Label> child = new LinkedHashSet<>();
+    private Set<Label> children = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonbTransient
@@ -81,16 +79,15 @@ public class Label {
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")
     private Date timestamp;
 
-    // ToDo: cyclic - be aware
-    /* public void addChild(Label child) {
-        parent.add(child);
+    public void addChild(Label child) {
+        children.add(child);
         child.setParent(this);
     }
 
     public void removeChild(Label child) {
-        parent.remove(child);
+        children.remove(child);
         child.setParent(null);
-    } */
+    }
 
     public Long getId() {
         return id;
@@ -101,11 +98,11 @@ public class Label {
     }
 
     public Set<Label> getChild() {
-        return child;
+        return children;
     }
 
-    public void setChild(Set<Label> child) {
-        this.child = child;
+    public void setChild(Set<Label> children) {
+        this.children = children;
     }
 
     public Label getParent() {
