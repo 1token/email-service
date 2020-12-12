@@ -1,154 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>email-service - 1.0.0-SNAPSHOT</title>
-    <style>
-        h1, h2, h3, h4, h5, h6 {
-            margin-bottom: 0.5rem;
-            font-weight: 400;
-            line-height: 1.5;
-        }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
-        h1 {
-            font-size: 2.5rem;
-        }
+  <script src="http://localhost:8080/auth/js/keycloak.js"></script>
 
-        h2 {
-            font-size: 2rem
-        }
-
-        h3 {
-            font-size: 1.75rem
-        }
-
-        h4 {
-            font-size: 1.5rem
-        }
-
-        h5 {
-            font-size: 1.25rem
-        }
-
-        h6 {
-            font-size: 1rem
-        }
-
-        .lead {
-            font-weight: 300;
-            font-size: 2rem;
-        }
-
-        .banner {
-            font-size: 2.7rem;
-            margin: 0;
-            padding: 2rem 1rem;
-            background-color: #00A1E2;
-            color: white;
-        }
-
-        body {
-            margin: 0;
-            font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-
-        code {
-            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 87.5%;
-            color: #e83e8c;
-            word-break: break-word;
-        }
-
-        .left-column {
-            padding: .75rem;
-            max-width: 75%;
-            min-width: 55%;
-        }
-
-        .right-column {
-            padding: .75rem;
-            max-width: 25%;
-        }
-
-        .container {
-            display: flex;
-            width: 100%;
-        }
-
-        li {
-            margin: 0.75rem;
-        }
-
-        .right-section {
-            margin-left: 1rem;
-            padding-left: 0.5rem;
-        }
-
-        .right-section h3 {
-            padding-top: 0;
-            font-weight: 200;
-        }
-
-        .right-section ul {
-            border-left: 0.3rem solid #00A1E2;
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-    </style>
+  <title>Frontend</title>
 </head>
+
 <body>
-
-<div class="banner lead">
-    Your new Cloud-Native application is ready!
-</div>
-
-<div class="container">
-    <div class="left-column">
-        <p class="lead"> Congratulations, you have created a new Quarkus application with RESTEasy.</p>
-
-        <h2>Why do you see this?</h2>
-
-        <p>This page is served by Quarkus. The source is in
-            <code>src/main/resources/META-INF/resources/index.html</code>.</p>
-
-        <h2>What can I do from here?</h2>
-
-        <p>If not already done, run the application in <em>dev mode</em> using: <code>./mvnw compile quarkus:dev</code>.
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Keycloak Frontend Example
+      </h1>
+      <div class="buttons">
+        <button class="button is-primary" onclick="keycloak.login()">Login</button>
+        <button class="button is-info" onclick="output(keycloak.tokenParsed)">Show Access Token</button>
+        <button class="button is-warning" onclick="keycloak.logout()">Logout</button>
+      </div>
+      <p class="subtitle">
+        <strong id="username"></strong>
+      </p>
+      <nav class="panel">
+        <p class="panel-heading">
+          Events
         </p>
-        <ul>
-            <li>Open the example <a href="/resteasy/hello" target="_blank">"/hello"</a> endpoint</li>
-            <li>Add REST resources, Servlets, functions and other services in <code>src/main/java</code>.</li>
-            <li>Your static assets are located in <code>src/main/resources/META-INF/resources</code>.</li>
-            <li>Configure your application in <code>src/main/resources/application.properties</code>.
-            </li>
-        </ul>
-
-        <h2>Do you like Quarkus?</h2>
-        <p>Go give it a star on <a href="https://github.com/quarkusio/quarkus">GitHub</a>.</p>
-
-        <h2>How do I get rid of this page?</h2>
-        <p>Just delete the <code>src/main/resources/META-INF/resources/index.html</code> file.</p>
-    </div>
-    <div class="right-column">
-        <div class="right-section">
-            <h3>Application</h3>
-            <ul>
-                <li>GroupId: org.acme.emailservice</li>
-                <li>ArtifactId: email-service</li>
-                <li>Version: 1.0.0-SNAPSHOT</li>
-                <li>Quarkus Version: 1.9.2.Final</li>
-            </ul>
+        <div class="panel-block" id="events"></div>
+      </nav>
+      <label class="label">API Request</label>
+      <div class="field is-grouped">
+        <div class="control is-expanded">
+          <input class="input" type="text" id="url" value="http://localhost:3000/hello/private"
+            placeholder="Type API URL">
         </div>
-        <div class="right-section">
-            <h3>Next steps</h3>
-            <ul>
-                <li><a href="https://quarkus.io/guides/maven-tooling.html" target="_blank">Setup your IDE</a></li>
-                <li><a href="https://quarkus.io/guides/getting-started.html" target="_blank">Getting started</a></li>
-                <li><a href="https://quarkus.io" target="_blank">Quarkus Web Site</a></li>
-            </ul>
+        <div class="control">
+          <a class="button is-success" onclick="request()">
+            Send
+          </a>
         </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" id="include_access_token" checked>
+            Include Access Token
+          </label>
+        </div>
+      </div>
+      <nav class="panel">
+        <p class="panel-heading">
+          Result
+        </p>
+        <div class="panel-block">
+          <pre style="width: 100%;" id="output"></pre>
+        </div>
+      </nav>
     </div>
-</div>
+  </section>
+  <script>
+    function event(event) {
+      const e = document.getElementById('events').innerHTML;
+      document.getElementById('events').innerHTML = new Date().toLocaleString() + "\t" + event + "\n" + e;
+    }
+
+    function output(data) {
+      if (typeof data === 'object') {
+        data = JSON.stringify(data, null, '  ');
+      }
+      document.getElementById('output').innerHTML = data;
+    }
+
+    async function doRequest(url, includeAccessToken) {
+      const result = await fetch(url,  {
+        headers: includeAccessToken ? {
+          'Authorization': `Bearer ${keycloak.token}`
+        } : undefined
+      });
+      const resultText = await result.text();
+      
+      output(`Status: ${result.status} <br/>Content: ${resultText}`);
+    }
+
+    async function request() {
+      const url = document.getElementById('url').value;
+      const includeAccessToken = document.getElementById('include_access_token').checked;
+      if (includeAccessToken) {
+        try {
+          await keycloak.updateToken();
+          await doRequest(url, includeAccessToken);
+        } catch (error) {
+          output(`Error on update refresh token: ${error}`);
+        }
+      } else {
+        await doRequest(url, includeAccessToken)
+      }
+    }
+
+    const keycloak = Keycloak({
+      url: 'http://localhost:8080/auth',
+      realm: 'demo',
+      clientId: 'jmap-demo-webmail',
+      publicClient: true,
+    });
+
+    keycloak.onAuthSuccess = async function () {
+      const user = await keycloak.loadUserInfo();
+      document.getElementById('username').innerHTML = `User: ${user.name}`;
+    };
+
+    keycloak.init({
+      pkceMethod: 'S256',
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+    }).success(function (authenticated) {
+      event('Init Success (' + (authenticated ? 'Authenticated' : 'Not Authenticated') + ')');
+    }).error(function (error) {
+      event('Init Error');
+    });
+
+
+  </script>
 </body>
+
 </html>
