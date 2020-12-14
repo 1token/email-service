@@ -1,57 +1,57 @@
 package org.acme.emailservice.service;
 
-import java.util.Collections;
-
-// import static java.util.stream.Collectors.toList;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import org.acme.emailservice.exception.RecordNotFound;
 import org.acme.emailservice.model.Label;
 import org.acme.emailservice.model.Message;
 import org.acme.emailservice.model.Tag;
+// import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class MessageService {
 
+    // private static Logger LOGGER = Logger.getLogger(Message.class);
+
     @PersistenceContext
     EntityManager em;
 
-    public Message getMessage(Long id) {
-        return em.find(Message.class, id);
+    public Optional<Message> getMessage(String username, Long id) {
+        try {
+            Message result = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
+                    .setParameter("id", id).getSingleResult();
+            return Optional.ofNullable(result);
+        } catch (NoResultException e) {
+            // LOGGER.debugf("No record found for username: %s", username);
+            return Optional.empty();
+        }
     }
 
-    public Message getMessage(Message message) {
-        Message t = em.find(Message.class, message);
-        System.out.println("Error");
-        return t;
-    }
-
-    public List<Message> getMessages() {
-        // return (List<Message>)em.createNamedQuery("Message.getAll",
-        // Message.class).getResultStream()
-        // .collect(toList());
-        return (List<Message>) em.createNamedQuery("Message.getAll", Message.class).getResultList();
+    public List<Message> getMessages(String username) {
+        return (List<Message>) em.createNamedQuery("Message.getAll", Message.class).setParameter("username", username)
+                .getResultList();
     }
 
     // ToDo: User/Role for message, labels, ...
     @Transactional
-    public Message updateOrCreate(Message newMessage) throws RecordNotFound {
+    public Optional<Message> updateOrCreate(String username, Message newMessage) {
         if (newMessage.getId() == null) {
+            // newMessage.getAccount().setUsername(username);
             em.persist(newMessage);
-            return newMessage;
+            return Optional.ofNullable(newMessage);
         } else {
             boolean updateHistory = false;
             boolean updateTimeline = false;
             Message oldMessage = em.find(Message.class, newMessage.getId());
             if (oldMessage == null) {
-                throw new RecordNotFound("Message [" + newMessage.getId() + "] not found");
+                return Optional.empty();
             }
             if (oldMessage.getSentAt() == null) {
                 // Subject
@@ -98,17 +98,18 @@ public class MessageService {
                         em.createNativeQuery("select nextval('MESSAGE_TIMELINE_ID')").getSingleResult().toString());
                 oldMessage.setTimelineId(value);
             }
-            return em.merge(oldMessage);
+            return Optional.ofNullable(em.merge(oldMessage));
         }
     }
 
     @Transactional
-    public Message delete(Long id) {
-        Message t = em.find(Message.class, id);
+    public Optional<Message> delete(String username, Long id) {
+        Message result = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
+        .setParameter("id", id).getSingleResult();
 
-        if (t != null) {
-            em.remove(t);
+        if (result != null) {
+            em.remove(result);
         }
-        return t;
+        return Optional.ofNullable(result);
     }
 }

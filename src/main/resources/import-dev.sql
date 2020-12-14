@@ -30,8 +30,8 @@ ALTER TABLE public.resource_server ALTER COLUMN history_id SET DEFAULT NEXTVAL('
 INSERT INTO user_(username) VALUES ('igor@acme.org');
 INSERT INTO user_(username) VALUES ('mike@acme.org');
 
-INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@gmail.com', 'Igor Zboran (GMail)', 'izboran@gmail.com');
-INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@hotmail.com', 'Igor Zboran (Hotmail)', 'izboran@hotmail.com');
+INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'jdoe@example.io', 'John Doe', 'jdoe@example.io');
+INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@gmail.com', 'Igor Zboran (Gmail)', 'izboran@gmail.com');
 INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@gmail.com', 'mike@gmail.com');
 INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@hotmail.com', 'mike@hotmail.com');
 

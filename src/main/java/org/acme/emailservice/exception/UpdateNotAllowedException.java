@@ -2,6 +2,8 @@ package org.acme.emailservice.exception;
 
 public class UpdateNotAllowedException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+
     public UpdateNotAllowedException() {
     }
 

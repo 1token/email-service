@@ -27,14 +27,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.jboss.logging.Logger;
+// import org.jboss.logging.Logger;
 
 @Entity
 @Table(name = "message")
-@NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m ORDER BY m.timelineId DESC")
+@NamedQuery(name = "Message.get", query = "SELECT m FROM Message m WHERE m.id=:id AND m.account.username=:username ORDER BY m.timelineId DESC")
+@NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m WHERE m.account.username=:username ORDER BY m.timelineId DESC")
 public class Message {
 
-    private static Logger logger = Logger.getLogger(Message.class);
+    // private static Logger LOGGER = Logger.getLogger(Message.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

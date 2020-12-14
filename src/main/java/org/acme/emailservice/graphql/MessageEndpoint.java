@@ -1,6 +1,7 @@
 package org.acme.emailservice.graphql;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -14,24 +15,14 @@ import org.eclipse.microprofile.graphql.Query;
 
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
-// import io.quarkus.security.Authenticated;
-import io.quarkus.security.identity.SecurityIdentity;
 
 @GraphQLApi
 @RolesAllowed({ "user", "admin" })
 public class MessageEndpoint {
 
     @Inject
-    SecurityIdentity identity;
-
-    @Inject
-    JsonWebToken jwt;
-
-    @Inject
-    @Claim(standard = Claims.email)
-    String email;
+    @Claim(standard = Claims.preferred_username)
+    String username;
 
     @Inject
     MessageService messageService;
@@ -42,22 +33,31 @@ public class MessageEndpoint {
     }
 
     @Query
-    public Message getMessage(Long id) {
-        return messageService.getMessage(id);
+    public Message getMessage(Long id) throws RecordNotFound {
+        Optional<Message> result = messageService.getMessage(username, id);
+        return result.orElseThrow(() -> new RecordNotFound("Message not found"));
     }
 
     @Query
     public List<Message> getMessages() {
-        return messageService.getMessages();
+        return messageService.getMessages(username);
+    }
+
+    @Mutation
+    public Message createMessage(Message message) throws RecordNotFound {
+        Optional<Message> result = messageService.updateOrCreate(username, message);
+        return result.orElseThrow(() -> new RecordNotFound("Message not created"));
     }
 
     @Mutation
     public Message updateMessage(Message message) throws RecordNotFound {
-        return messageService.updateOrCreate(message);
+        Optional<Message> result = messageService.updateOrCreate(username, message);
+        return result.orElseThrow(() -> new RecordNotFound("Message not found"));
     }
 
     @Mutation
-    public Message deleteMessage(Long id) {
-        return messageService.delete(id);
+    public Message deleteMessage(Long id) throws RecordNotFound {
+        Optional<Message> result = messageService.delete(username, id);
+        return result.orElseThrow(() -> new RecordNotFound("Message not found"));
     }
 }
