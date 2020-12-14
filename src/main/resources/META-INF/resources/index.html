@@ -75,25 +75,38 @@
     }
 
     async function doRequest(url, includeAccessToken) {
-      const result = await fetch(url,  {
+      const result = await fetch(url, {
         headers: includeAccessToken ? {
           'Authorization': `Bearer ${keycloak.token}`
         } : undefined
       });
       const resultText = await result.text();
-      
+
       output(`Status: ${result.status} <br/>Content: ${resultText}`);
     }
+
+    const updateToken = () => {
+      return new Promise((resolve, reject) => {
+        keycloak
+          .updateToken()
+          .success(() => {
+            resolve(keycloak.token);
+          })
+          .error(() => {
+            reject(new Error("Cannot update refresh token"));
+          });
+      });
+    };
 
     async function request() {
       const url = document.getElementById('url').value;
       const includeAccessToken = document.getElementById('include_access_token').checked;
       if (includeAccessToken) {
         try {
-          await keycloak.updateToken();
+          await updateToken();
           await doRequest(url, includeAccessToken);
         } catch (error) {
-          output(`Error on update refresh token: ${error}`);
+          output(`Error on request: ${error?.message}`);
         }
       } else {
         await doRequest(url, includeAccessToken)
