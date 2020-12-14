@@ -1,4 +1,4 @@
-package org.acme.emailservice.endpoint;
+package org.acme.emailservice.graphql;
 
 import java.util.List;
 

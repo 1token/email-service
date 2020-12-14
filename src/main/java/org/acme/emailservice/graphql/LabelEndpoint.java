@@ -1,4 +1,4 @@
-package org.acme.emailservice.endpoint;
+package org.acme.emailservice.graphql;
 
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Query;
