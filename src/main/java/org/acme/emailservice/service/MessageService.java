@@ -49,8 +49,11 @@ public class MessageService {
         } else {
             boolean updateHistory = false;
             boolean updateTimeline = false;
-            Message oldMessage = em.find(Message.class, newMessage.getId());
-            if (oldMessage == null) {
+            Message oldMessage;
+            try {
+                oldMessage = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
+                .setParameter("id", newMessage.getId()).getSingleResult();
+            } catch (NoResultException e) {
                 return Optional.empty();
             }
             if (oldMessage.getSentAt() == null) {
