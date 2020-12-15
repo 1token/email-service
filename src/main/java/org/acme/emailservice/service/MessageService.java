@@ -1,12 +1,10 @@
 package org.acme.emailservice.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
@@ -23,15 +21,10 @@ public class MessageService {
     @PersistenceContext
     EntityManager em;
 
-    public Optional<Message> getMessage(String username, Long id) {
-        try {
-            Message result = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
-                    .setParameter("id", id).getSingleResult();
-            return Optional.ofNullable(result);
-        } catch (NoResultException e) {
-            // LOGGER.debugf("No record found for username: %s", username);
-            return Optional.empty();
-        }
+    public Message getMessage(String username, Long id) {
+        Message result = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
+                .setParameter("id", id).getSingleResult();
+        return result;
     }
 
     public List<Message> getMessages(String username) {
@@ -41,21 +34,17 @@ public class MessageService {
 
     // ToDo: User/Role for message, labels, ...
     @Transactional
-    public Optional<Message> updateOrCreate(String username, Message newMessage) {
+    public Message updateOrCreate(String username, Message newMessage) {
         if (newMessage.getId() == null) {
             // newMessage.getAccount().setUsername(username);
             em.persist(newMessage);
-            return Optional.ofNullable(newMessage);
+            return newMessage;
         } else {
             boolean updateHistory = false;
             boolean updateTimeline = false;
             Message oldMessage;
-            try {
-                oldMessage = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
-                .setParameter("id", newMessage.getId()).getSingleResult();
-            } catch (NoResultException e) {
-                return Optional.empty();
-            }
+            oldMessage = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
+            .setParameter("id", newMessage.getId()).getSingleResult();
             if (oldMessage.getSentAt() == null) {
                 // Subject
                 if (newMessage.getSubject() != null && (!oldMessage.getSubject().equals(newMessage.getSubject()))) {
@@ -101,18 +90,18 @@ public class MessageService {
                         em.createNativeQuery("select nextval('MESSAGE_TIMELINE_ID')").getSingleResult().toString());
                 oldMessage.setTimelineId(value);
             }
-            return Optional.ofNullable(em.merge(oldMessage));
+            return em.merge(oldMessage);
         }
     }
 
     @Transactional
-    public Optional<Message> delete(String username, Long id) {
+    public Message delete(String username, Long id) {
         Message result = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
         .setParameter("id", id).getSingleResult();
 
         if (result != null) {
             em.remove(result);
         }
-        return Optional.ofNullable(result);
+        return result;
     }
 }
