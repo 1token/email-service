@@ -31,8 +31,9 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "message")
-@NamedQuery(name = "Message.get", query = "SELECT m FROM Message m WHERE m.id=:id AND m.account.username=:username ORDER BY m.timelineId DESC")
-@NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m WHERE m.account.username=:username ORDER BY m.timelineId DESC")
+@NamedQuery(name = "Message.get", query = "SELECT m FROM Message m WHERE m.account.user.username=:username AND m.id=:id")
+@NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m WHERE m.account.user.username=:username ORDER BY m.timelineId DESC")
+@NamedQuery(name = "Message.getAllByAccount", query = "SELECT m FROM Message m WHERE m.account.user.username=:username AND m.account=:account ORDER BY m.timelineId DESC")
 public class Message {
 
     // private static Logger LOGGER = Logger.getLogger(Message.class);
@@ -42,11 +43,10 @@ public class Message {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonbTransient
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String messageId;
 
     @Column(nullable = true)

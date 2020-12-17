@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "user_")
+@NamedQuery(name = "User.get", query = "SELECT u FROM User u WHERE u.id=:id")
+@NamedQuery(name = "User.getUserByUsername", query = "SELECT u FROM User u WHERE u.username=:username")
 @NamedQuery(name = "User.getAll", query = "SELECT u FROM User u ORDER BY u.username")
 public class User {
 

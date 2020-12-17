@@ -14,8 +14,10 @@ public class AccountService {
     @PersistenceContext
     EntityManager em;
 
-    public Account getAccount(Long id){
-        return em.find(Account.class, id);
+    public Account getAccount(String username, Long id) {
+        Account result = em.createNamedQuery("Account.get", Account.class).setParameter("username", username)
+                .setParameter("id", id).getSingleResult();
+        return result;
     }
 
     public Account getAccount(Account account) {
@@ -24,8 +26,7 @@ public class AccountService {
         return t;
     }
     
-    public List<Account> getAccounts(){
-        return (List<Account>)em.createNamedQuery("Account.getAll", Account.class).getResultList();        
+    public List<Account> getAccounts(String username){
+        return (List<Account>)em.createNamedQuery("Account.getAll", Account.class).setParameter("username", username).getResultList();        
     }
-    
 }

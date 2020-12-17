@@ -30,6 +30,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "label")
 @NamedQuery(name = "Label.getAll", query = "SELECT l FROM Label l ORDER BY l.name")
+@NamedQuery(name = "Label.getAllUserLabels", query = "SELECT l FROM Label l WHERE l.user=:user ORDER BY l.name")
+@NamedQuery(name = "Label.getUserDraftsLabel", query = "SELECT l FROM Label l WHERE l.user=:user AND l.role='DRAFTS'")
 public class Label {
 
     @Id

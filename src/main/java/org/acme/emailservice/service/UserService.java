@@ -11,12 +11,13 @@ import org.acme.emailservice.model.User;
 
 @ApplicationScoped
 public class UserService {
-    
+
     @PersistenceContext
     EntityManager em;
 
-    public User getUser(Long id){
-        return em.find(User.class, id);
+    public User getUser(Long id) {
+        User result = em.createNamedQuery("User.get", User.class).setParameter("id", id).getSingleResult();
+        return result;
     }
 
     public User getUser(User user) {
@@ -24,17 +25,22 @@ public class UserService {
         System.out.println("Error");
         return t;
     }
-    
-    public List<User> getUsers(){
-        return (List<User>)em.createNamedQuery("User.getAll", User.class).getResultList();        
+
+    public User getUserByUsername(String username) {
+        User result = em.createNamedQuery("User.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
+        return result;
+    }
+
+    public List<User> getUsers() {
+        return (List<User>) em.createNamedQuery("User.getAll", User.class).getResultList();
     }
 
     @Transactional
     public User updateOrCreate(User user) {
-        if (user.getId() == null){
+        if (user.getId() == null) {
             em.persist(user);
             return user;
-        }else{
+        } else {
             return em.merge(user);
         }
     }
@@ -43,7 +49,7 @@ public class UserService {
     public User delete(Long id) {
         User t = em.find(User.class, id);
 
-        if (t != null){
+        if (t != null) {
             em.remove(t);
         }
         return t;

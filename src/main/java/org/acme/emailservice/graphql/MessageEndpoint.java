@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
+import org.acme.emailservice.exception.EmailServiceException;
+import org.acme.emailservice.model.Account;
 import org.acme.emailservice.model.Message;
 import org.acme.emailservice.service.MessageService;
 import org.eclipse.microprofile.graphql.GraphQLApi;
@@ -40,14 +42,19 @@ public class MessageEndpoint {
         return messageService.getMessages(username);
     }
 
-    @Mutation
-    public Message createMessage(Message message) {
-        return messageService.updateOrCreate(username, message);
+    @Query
+    public List<Message> getMessagesByAccount(Account account) {
+        return messageService.getMessages(username, account);
     }
 
     @Mutation
-    public Message updateMessage(Message message) {
-        return messageService.updateOrCreate(username, message);
+    public Message createMessage(Account account, Message message) {
+        return messageService.createMessage(username, account, message);
+    }
+
+    @Mutation
+    public Message updateMessage(Message message) throws EmailServiceException {
+        return messageService.updateMessage(username, message);
     }
 
     @Mutation

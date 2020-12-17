@@ -22,7 +22,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "account")
-@NamedQuery(name = "Account.getAll", query = "SELECT a FROM Account a ORDER BY a.username")
+@NamedQuery(name = "Account.get", query = "SELECT a FROM Account a WHERE a.user.username=:username AND a.id=:id")
+@NamedQuery(name = "Account.getAll", query = "SELECT a FROM Account a WHERE a.user.username=:username ORDER BY a.username")
+@NamedQuery(name = "Account.getByEmailAddress", query = "SELECT a FROM Account a WHERE a.user.username=:username AND a.emailAddress=:emailAddress")
 public class Account {
 
     @Id
