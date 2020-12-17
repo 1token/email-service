@@ -20,12 +20,6 @@ public class UserService {
         return result;
     }
 
-    public User getUser(User user) {
-        User t = em.find(User.class, user);
-        System.out.println("Error");
-        return t;
-    }
-
     public User getUserByUsername(String username) {
         User result = em.createNamedQuery("User.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
         return result;

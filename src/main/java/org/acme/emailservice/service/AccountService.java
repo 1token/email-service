@@ -19,12 +19,6 @@ public class AccountService {
                 .setParameter("id", id).getSingleResult();
         return result;
     }
-
-    public Account getAccount(Account account) {
-        Account t = em.find(Account.class, account);
-        System.out.println("Error");
-        return t;
-    }
     
     public List<Account> getAccounts(String username){
         return (List<Account>)em.createNamedQuery("Account.getAll", Account.class).setParameter("username", username).getResultList();        

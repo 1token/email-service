@@ -18,12 +18,6 @@ public class TagService {
     public Tag getTag(Long id){
         return em.find(Tag.class, id);
     }
-
-    public Tag getTag(Tag tag) {
-        Tag t = em.find(Tag.class, tag);
-        System.out.println("Error");
-        return t;
-    }
     
     public List<Tag> getTags(){
         return (List<Tag>)em.createNamedQuery("Tag.getAll", Tag.class).getResultList();        
