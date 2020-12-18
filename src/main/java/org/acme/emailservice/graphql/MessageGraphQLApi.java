@@ -18,7 +18,7 @@ import org.eclipse.microprofile.jwt.Claims;
 
 @GraphQLApi
 @RolesAllowed({ "user", "admin" })
-public class MessageEndpoint {
+public class MessageGraphQLApi {
 
     @Inject
     @Claim(standard = Claims.preferred_username)

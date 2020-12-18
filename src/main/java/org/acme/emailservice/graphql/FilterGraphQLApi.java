@@ -4,15 +4,15 @@ import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Query;
 
 @GraphQLApi
-public class LabelEndpoint {
+public class FilterGraphQLApi {
 
     @Query
-    public String helloLabel() {
-        return "Hello Label!";
+    public String helloFilter() {
+        return "Hello Filter!";
     }
 
     /* @Query
-    public List<Label> getLabels(){
-        return labelService.getLabels();
+    public List<Filter> getFilters(){
+        return filterService.getFilters();
     } */
 }

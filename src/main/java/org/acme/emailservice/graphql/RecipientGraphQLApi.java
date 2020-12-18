@@ -4,7 +4,7 @@ import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Query;
 
 @GraphQLApi
-public class RecipientEndpoint {
+public class RecipientGraphQLApi {
 
     @Query
     public String helloRecipient() {

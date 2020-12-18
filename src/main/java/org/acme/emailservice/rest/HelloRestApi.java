@@ -18,7 +18,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 
 @Path("/hello")
 @RequestScoped
-public class HelloEndpoint {
+public class HelloRestApi {
 
     @Inject
     SecurityIdentity identity;

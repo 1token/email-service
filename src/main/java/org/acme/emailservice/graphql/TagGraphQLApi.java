@@ -11,7 +11,7 @@ import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Query;
 
 @GraphQLApi
-public class TagEndpoint {
+public class TagGraphQLApi {
 
     @Inject
     TagService tagService;
