@@ -48,7 +48,7 @@ public class MessageGraphQLApi {
     }
 
     @Mutation
-    public Message createMessage(Account account, Message message) {
+    public Message createMessage(Account account, Message message) throws EmailServiceException {
         return messageService.createMessage(username, account, message);
     }
 

@@ -10,8 +10,12 @@ import javax.transaction.Transactional;
 
 import org.acme.emailservice.exception.EmailServiceException;
 import org.acme.emailservice.model.Account;
+import org.acme.emailservice.model.Attachment;
 import org.acme.emailservice.model.Label;
 import org.acme.emailservice.model.Message;
+import org.acme.emailservice.model.RecipientBcc;
+import org.acme.emailservice.model.RecipientCc;
+import org.acme.emailservice.model.RecipientTo;
 import org.acme.emailservice.model.Tag;
 // import org.jboss.logging.Logger;
 import org.acme.emailservice.model.User;
@@ -36,24 +40,47 @@ public class MessageService {
     }
 
     public List<Message> getMessages(String username, Account account) {
-        Account accountByEmailAddress = em.createNamedQuery("Account.getByEmailAddress", Account.class).setParameter("username", username).setParameter("emailAddress", account.getEmailAddress()).getSingleResult();
+        Account accountByEmailAddress = em.createNamedQuery("Account.getByEmailAddress", Account.class)
+                .setParameter("username", username).setParameter("emailAddress", account.getEmailAddress())
+                .getSingleResult();
 
-        return (List<Message>) em.createNamedQuery("Message.getAllByAccount", Message.class).setParameter("username", username).setParameter("account", accountByEmailAddress).getResultList();
+        return (List<Message>) em.createNamedQuery("Message.getAllByAccount", Message.class)
+                .setParameter("username", username).setParameter("account", accountByEmailAddress).getResultList();
     }
 
-        // TODO: User/Role for message, labels, ...
+    // TODO: User/Role for message, labels, ...
     @Transactional
-    public Message createMessage(String username, Account account, Message newMessage) {
-        User user = em.createNamedQuery("User.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
+    public Message createMessage(String username, Account account, Message message) throws EmailServiceException {
+        User user = em.createNamedQuery("User.getUserByUsername", User.class).setParameter("username", username)
+                .getSingleResult();
+        // Account
+        Account accountByEmailAddress = em.createNamedQuery("Account.getByEmailAddress", Account.class)
+                .setParameter("username", username).setParameter("emailAddress", account.getEmailAddress())
+                .getSingleResult();
 
-        Account accountByEmailAddress = em.createNamedQuery("Account.getByEmailAddress", Account.class).setParameter("username", username).setParameter("emailAddress", account.getEmailAddress()).getSingleResult();
+        Message newMessage = new Message();
+
         newMessage.setAccount(accountByEmailAddress);
-
-        Label draftLabel = em.createNamedQuery("Label.getUserDraftsLabel", Label.class).setParameter("user", user).getSingleResult();
+        // Subject
+        newMessage.setSubject(message.getSubject());
+        // Tags
+        for (Tag tag : message.getTags()) {
+            tag.setMessage(newMessage);
+        }
+        newMessage.getTags().addAll(message.getTags());
+        // Labels
+        if (message.getLabels().size() > 0) {
+            throw new EmailServiceException("labels for draft are not allowed");
+        }
+        Label draftLabel = em.createNamedQuery("Label.getUserDraftsLabel", Label.class).setParameter("user", user)
+                .getSingleResult();
         newMessage.addLabel(draftLabel);
-
-        newMessage.setHistoryId(Long.parseLong(em.createNativeQuery("select nextval('MESSAGE_HISTORY_ID')").getSingleResult().toString()));
-        newMessage.setTimelineId(Long.parseLong(em.createNativeQuery("select nextval('MESSAGE_TIMELINE_ID')").getSingleResult().toString()));
+        // HistoryId
+        newMessage.setHistoryId(Long
+                .parseLong(em.createNativeQuery("select nextval('MESSAGE_HISTORY_ID')").getSingleResult().toString()));
+        // TimelineId
+        newMessage.setTimelineId(Long
+                .parseLong(em.createNativeQuery("select nextval('MESSAGE_TIMELINE_ID')").getSingleResult().toString()));
         newMessage.setLastStmt((byte) 0);
 
         em.persist(newMessage);
@@ -62,57 +89,131 @@ public class MessageService {
 
     // TODO: User/Role for message, labels, ...
     @Transactional
-    public Message updateMessage(String username, Message newMessage) throws EmailServiceException {
-        if (newMessage.getId() == null) {
+    public Message updateMessage(String username, Message message) throws EmailServiceException {
+        if (message.getId() == null) {
             throw new EmailServiceException("id is required");
         }
         boolean updateHistory = false;
         boolean updateTimeline = false;
-        Message oldMessage;
-        oldMessage = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
-        .setParameter("id", newMessage.getId()).getSingleResult();
+        Message oldMessage = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
+                .setParameter("id", message.getId()).getSingleResult();
         if (oldMessage.getSentAt() == null) {
             // Subject
-            if (newMessage.getSubject() != null && (!oldMessage.getSubject().equals(newMessage.getSubject()))) {
+            if (message.getSubject() != null && (!oldMessage.getSubject().equals(message.getSubject()))) {
                 updateHistory = true;
                 updateTimeline = true;
-                oldMessage.setSubject(newMessage.getSubject());
+                oldMessage.setSubject(message.getSubject());
+            }
+            // RecipientsTo
+            for (RecipientTo recipientTo : message.getRecipientsTo()) {
+                recipientTo.setMessage(oldMessage);
+            }
+            List<RecipientTo> recipientsTo = message.getRecipientsTo();
+            List<RecipientTo> oldRecipientsTo = oldMessage.getRecipientsTo();
+            boolean recipientToEquals = recipientsTo.containsAll(oldRecipientsTo) && oldRecipientsTo.containsAll(recipientsTo);
+            if (recipientsTo != null && !recipientToEquals) {
+                updateHistory = true;
+                updateTimeline = true;
+                oldMessage.getRecipientsTo().clear();
+                oldMessage.getRecipientsTo().addAll(message.getRecipientsTo());
+            }
+            // RecipientsCc
+            for (RecipientCc recipientCc : message.getRecipientsCc()) {
+                recipientCc.setMessage(oldMessage);
+            }
+            List<RecipientCc> recipientsCc = message.getRecipientsCc();
+            List<RecipientCc> oldRecipientsCc = oldMessage.getRecipientsCc();
+            boolean recipientCcEquals = recipientsCc.containsAll(oldRecipientsCc) && oldRecipientsCc.containsAll(recipientsCc);
+            if (recipientsCc != null && !recipientCcEquals) {
+                updateHistory = true;
+                updateTimeline = true;
+                oldMessage.getRecipientsCc().clear();
+                oldMessage.getRecipientsCc().addAll(message.getRecipientsCc());
+            }
+            // RecipientsBcc
+            for (RecipientBcc recipientBcc : message.getRecipientsBcc()) {
+                recipientBcc.setMessage(oldMessage);
+            }
+            List<RecipientBcc> recipientsBcc = message.getRecipientsBcc();
+            List<RecipientBcc> oldRecipientsBcc = oldMessage.getRecipientsBcc();
+            boolean recipientBccEquals = recipientsBcc.containsAll(oldRecipientsBcc) && oldRecipientsBcc.containsAll(recipientsBcc);
+            if (recipientsBcc != null && !recipientBccEquals) {
+                updateHistory = true;
+                updateTimeline = true;
+                oldMessage.getRecipientsBcc().clear();
+                oldMessage.getRecipientsBcc().addAll(message.getRecipientsBcc());
+            }
+            // Attachments
+            for (Attachment attachment : message.getAttachments()) {
+                attachment.setMessage(oldMessage);
+            }
+            List<Attachment> attachments = message.getAttachments();
+            List<Attachment> oldAttachments = oldMessage.getAttachments();
+            boolean attachmentEquals = attachments.containsAll(oldAttachments) && oldAttachments.containsAll(attachments);
+            if (attachments != null && !attachmentEquals) {
+                updateHistory = true;
+                updateTimeline = true;
+                oldMessage.getAttachments().clear();
+                oldMessage.getAttachments().addAll(message.getAttachments());
             }
             // Tags
-            for (Tag tag : newMessage.getTags()) {
+            for (Tag tag : message.getTags()) {
                 tag.setMessage(oldMessage);
             }
-            List<Tag> newTags = newMessage.getTags();
+            List<Tag> tags = message.getTags();
             List<Tag> oldTags = oldMessage.getTags();
-            boolean tagEquals = newTags.containsAll(oldTags) && oldTags.containsAll(newTags);
-            if (newTags != null && !tagEquals) {
+            boolean tagEquals = tags.containsAll(oldTags) && oldTags.containsAll(tags);
+            if (tags != null && !tagEquals) {
                 updateHistory = true;
                 updateTimeline = true;
                 oldMessage.getTags().clear();
-                oldMessage.getTags().addAll(newMessage.getTags());
+                oldMessage.getTags().addAll(message.getTags());
             }
+            // Labels
+            if (message.getLabels().size() > 0) {
+                throw new EmailServiceException("labels for draft are not allowed");
+            }
+        } else {
+            // dummy gets to avoid - Unable to perform requested lazy initialization [MyEntity.lazyField] - no session and settings disallow loading outside the Session
+            // RecipientsTo
+            @SuppressWarnings("unused")
+            List<RecipientTo> oldRecipientsTo = oldMessage.getRecipientsTo();
+            // RecipientsCc
+            @SuppressWarnings("unused")
+            List<RecipientCc> oldRecipientsCc = oldMessage.getRecipientsCc();
+            // RecipientsBcc
+            @SuppressWarnings("unused")
+            List<RecipientBcc> oldRecipientsBcc = oldMessage.getRecipientsBcc();
+            // Attachments
+            @SuppressWarnings("unused")
+            List<Attachment> oldAttachments = oldMessage.getAttachments();
+            // Tags
+            @SuppressWarnings("unused")
+            List<Tag> oldTags = oldMessage.getTags();
         }
         // Labels
         // TODO: insert new labels into label table
-        Set<Label> newLabels = newMessage.getLabels();
+        Set<Label> labels = message.getLabels();
         Set<Label> oldLabels = oldMessage.getLabels();
-        boolean labelEquals = newLabels.containsAll(oldLabels) && oldLabels.containsAll(newLabels);
-        if (newLabels != null && !labelEquals) {
+        boolean labelEquals = labels.containsAll(oldLabels) && oldLabels.containsAll(labels);
+        if (labels != null && !labelEquals) {
             updateHistory = true;
             oldMessage.getLabels().clear();
-            for (Label l : newMessage.getLabels()) {
+            for (Label l : message.getLabels()) {
                 Label label = em.find(Label.class, l.getId());
                 if (label != null) {
                     oldMessage.addLabel(label);
                 }
             }
         }
+        // HistoryId
         if (updateHistory) {
             Long value = Long.parseLong(
                     em.createNativeQuery("select nextval('MESSAGE_HISTORY_ID')").getSingleResult().toString());
             oldMessage.setHistoryId(value);
             oldMessage.setLastStmt((byte) 1);
         }
+        // TimelineId
         if (updateTimeline) {
             Long value = Long.parseLong(
                     em.createNativeQuery("select nextval('MESSAGE_TIMELINE_ID')").getSingleResult().toString());
@@ -124,7 +225,7 @@ public class MessageService {
     @Transactional
     public Message delete(String username, Long id) {
         Message result = em.createNamedQuery("Message.get", Message.class).setParameter("username", username)
-        .setParameter("id", id).getSingleResult();
+                .setParameter("id", id).getSingleResult();
 
         if (result != null) {
             em.remove(result);

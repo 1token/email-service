@@ -28,9 +28,11 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.ColumnDefault;
 // import org.jboss.logging.Logger;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "message")
+// @DynamicUpdate
 @NamedQuery(name = "Message.get", query = "SELECT m FROM Message m WHERE m.account.user.username=:username AND m.id=:id")
 @NamedQuery(name = "Message.getAll", query = "SELECT m FROM Message m WHERE m.account.user.username=:username ORDER BY m.timelineId DESC")
 @NamedQuery(name = "Message.getAllByAccount", query = "SELECT m FROM Message m WHERE m.account.user.username=:username AND m.account=:account ORDER BY m.timelineId DESC")

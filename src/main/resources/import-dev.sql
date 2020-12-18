@@ -35,14 +35,14 @@ INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, '
 INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@gmail.com', 'mike@gmail.com');
 INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@hotmail.com', 'mike@hotmail.com');
 
-INSERT INTO message(account_id, message_id, subject) VALUES (1, 'rnd1VLFLDzBJD66ePDc3', 'Hello again!');
-INSERT INTO message(account_id, message_id, subject) VALUES (1, 'YPRYxyEQtkGdwM4e9pvR', 'Hello!');
-INSERT INTO message(account_id, message_id, subject) VALUES (2, 'HydCfgcpHxB0dgcNOH8r', 'Hi!');
-INSERT INTO message(account_id, message_id, subject) VALUES (2, 'cw3rK7wGvQlvUFKuU6h3', 'Hi again!');
-INSERT INTO message(account_id, message_id, subject) VALUES (3, 'OGBeDkLxQwj6BcrDKJrr', 'Holla!');
-INSERT INTO message(account_id, message_id, subject) VALUES (3, 'bhxe7KY2jIuNx9BDUfL0', 'Hola de nuevo!');
-INSERT INTO message(account_id, message_id, subject) VALUES (4, '7S6EY42zD3WgqtXPmSAF', 'Bonjour!');
-INSERT INTO message(account_id, message_id, subject) VALUES (4, 'Vg3iHbhbZa93uK1mtzNi', 'Rebonjour!');
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (1, 'rnd1VLFLDzBJD66ePDc3', 'Hello again!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (1, 'YPRYxyEQtkGdwM4e9pvR', 'Hello!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (2, 'HydCfgcpHxB0dgcNOH8r', 'Hi!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (2, 'cw3rK7wGvQlvUFKuU6h3', 'Hi again!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (3, 'OGBeDkLxQwj6BcrDKJrr', 'Holla!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (3, 'bhxe7KY2jIuNx9BDUfL0', 'Hola de nuevo!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (4, '7S6EY42zD3WgqtXPmSAF', 'Bonjour!', now());
+INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (4, 'Vg3iHbhbZa93uK1mtzNi', 'Rebonjour!', now());
 
 INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Invoice', '{"roles":["INVOICE"]}');
 INSERT INTO msg_tag(message_id, name, attributes) VALUES (1, 'Project', '{"roles":["PROJECT"]}');
