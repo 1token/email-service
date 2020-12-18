@@ -63,6 +63,27 @@ public class MessageService {
         newMessage.setAccount(accountByEmailAddress);
         // Subject
         newMessage.setSubject(message.getSubject());
+        // RecipientsTo
+        for (RecipientTo recipientTo : message.getRecipientsTo()) {
+            recipientTo.setMessage(newMessage);
+        }
+        newMessage.getRecipientsTo().addAll(message.getRecipientsTo());
+        // RecipientsCc
+        for (RecipientCc recipientCc : message.getRecipientsCc()) {
+            recipientCc.setMessage(newMessage);
+        }
+        newMessage.getRecipientsCc().addAll(message.getRecipientsCc());
+        // RecipientsBcc
+        for (RecipientBcc recipientBcc : message.getRecipientsBcc()) {
+            recipientBcc.setMessage(newMessage);
+        }
+        newMessage.getRecipientsBcc().addAll(message.getRecipientsBcc());
+        // Attachments
+        // TODO separated method
+        for (Attachment attachment : message.getAttachments()) {
+            attachment.setMessage(newMessage);
+        }
+        newMessage.getAttachments().addAll(message.getAttachments());
         // Tags
         for (Tag tag : message.getTags()) {
             tag.setMessage(newMessage);
@@ -144,6 +165,7 @@ public class MessageService {
                 oldMessage.getRecipientsBcc().addAll(message.getRecipientsBcc());
             }
             // Attachments
+            // TODO separated method
             for (Attachment attachment : message.getAttachments()) {
                 attachment.setMessage(oldMessage);
             }
@@ -174,7 +196,7 @@ public class MessageService {
                 throw new EmailServiceException("labels for draft are not allowed");
             }
         } else {
-            // dummy gets to avoid - Unable to perform requested lazy initialization [MyEntity.lazyField] - no session and settings disallow loading outside the Session
+            // lazy load
             // RecipientsTo
             @SuppressWarnings("unused")
             List<RecipientTo> oldRecipientsTo = oldMessage.getRecipientsTo();
