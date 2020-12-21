@@ -11,7 +11,7 @@ import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.configuration.ProfileManager;
 
-import org.acme.emailservice.email.GmailService;
+import org.acme.emailservice.email.EmailService;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
@@ -23,7 +23,7 @@ public class ApplicationLifecycle {
     @ConfigProperty(name = "server.timezone")
     String timeZone;
 
-    private GmailService gmailService;
+    private EmailService emailService;
 
     @PostConstruct
     public void init() {
@@ -37,12 +37,12 @@ public class ApplicationLifecycle {
     public void onStart(@Observes StartupEvent event) {
 
         logger.info("The application is starting with " + ProfileManager.getActiveProfile() + " profile");
-        gmailService = new GmailService();
+        emailService = new EmailService();
     }
 
-    public void onStop(@Observes ShutdownEvent event) {
+    public void onStop(@Observes ShutdownEvent event) throws InterruptedException {
 
-        gmailService.shutdown();
+        emailService.shutdown();
         logger.info("The application is stopping...");
     }
 }
