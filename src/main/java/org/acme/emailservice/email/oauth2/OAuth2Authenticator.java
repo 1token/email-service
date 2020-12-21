@@ -21,10 +21,8 @@ import java.util.Properties;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
+import jakarta.mail.Store;
 import jakarta.mail.Transport;
-import jakarta.mail.URLName;
-
-import com.sun.mail.gimap.GmailSSLStore;
 
 /**
  * Performs OAuth2 authentication.
@@ -66,17 +64,17 @@ public class OAuth2Authenticator {
 	 * @return An authenticated IMAPStore that can be used for IMAP operations.
 	 * @throws MessagingException
 	 */
-	public static GmailSSLStore connectToImap(String userEmail, String oauthToken) throws MessagingException {
+	public static Store connectToImap(String userEmail, String oauthToken) throws MessagingException {
 		Properties props = new Properties();
 		props.put("mail.gimaps.sasl.enable", "true");
 		props.put("mail.gimaps.sasl.mechanisms", "XOAUTH2");
 		props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken);
+
 		Session session = Session.getInstance(props);
-		// session.setDebug(true);
-		final URLName unusedUrlName = null;
-		GmailSSLStore store = new GmailSSLStore(session, unusedUrlName);
-		final String emptyPassword = "";
-		store.connect("imap.gmail.com", 993, userEmail, emptyPassword);
+		session.setDebug(true);
+
+		Store store = session.getStore();
+		store.connect("imap.gmail.com", 993, userEmail, "");
 		return store;
 	}
 
@@ -101,14 +99,14 @@ public class OAuth2Authenticator {
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.sasl.enable", "false");
+		props.put("mail.smtp.sasl.mechanisms", "XOAUTH2");
+		props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken);
+
 		Session session = Session.getInstance(props);
 		session.setDebug(debug);
 
-		// SMTPTransport transport = new SMTPTransport(session, unusedUrlName);
 		Transport transport = session.getTransport("smtp");
-		// If the password is non-null, SMTP tries to do AUTH LOGIN.
-		final String emptyPassword = null;
-		transport.connect(host, port, userEmail, emptyPassword);
+		transport.connect(host, port, userEmail, null);
 		return transport;
 	}
 }

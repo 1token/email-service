@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.ColumnDefault;
 // import org.jboss.logging.Logger;
-import org.hibernate.annotations.DynamicUpdate;
+// import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "message")
