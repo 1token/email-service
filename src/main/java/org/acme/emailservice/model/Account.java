@@ -52,7 +52,7 @@ public class Account {
     @Column(unique = false, nullable = true)
     private Integer imapType;
     @Column(unique = false, nullable = true)
-    private String imapSecret;
+    private String imapPassword;
 
     @Column(unique = false, nullable = true)
     private String smtpAddr;
@@ -61,7 +61,17 @@ public class Account {
     @Column(unique = false, nullable = true)
     private Integer smtpType;
     @Column(unique = false, nullable = true)
-    private String smtpSecret;
+    private String smtpPassword;
+    @Column(name="OAUTH2_PROVIDER", unique = false, nullable = true)
+    private String oAuth2Provider;
+    @Column(name="OAUTH2_SCOPE", unique = false, nullable = true, columnDefinition="TEXT")
+    private String oAuth2Scope;
+    @Column(name="OAUTH2_ACCESS_TOKEN", unique = false, nullable = true, columnDefinition="TEXT")
+    private String oAuth2AccessToken;
+    @Column(name="OAUTH2_REFRESH_TOKEN", unique = false, nullable = true, columnDefinition="TEXT")
+    private String oAuth2RefreshToken;
+    @Column(name="OAUTH2_EXPIRY_DATE", unique = false, nullable = true)
+    private String oAuth2ExpiryDate;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Message> messages = new LinkedHashSet<>();
@@ -149,12 +159,12 @@ public class Account {
         this.imapType = imapType;
     }
 
-    /* public String getImapSecret() {
-        return imapSecret;
+    /* public String getImapPassword() {
+        return imapPassword;
     } */
 
-    public void setImapSecret(String imapSecret) {
-        this.imapSecret = imapSecret;
+    public void setImapPassword(String imapPassword) {
+        this.imapPassword = imapPassword;
     }
 
     public String getSmtpAddr() {
@@ -181,12 +191,52 @@ public class Account {
         this.smtpType = smtpType;
     }
 
-    /* public String getSmtpSecret() {
-        return smtpSecret;
+    /* public String getSmtpPassword() {
+        return smtpPassword;
     } */
 
-    public void setSmtpSecret(String smtpSecret) {
-        this.smtpSecret = smtpSecret;
+    public void setSmtpPassword(String smtpPassword) {
+        this.smtpPassword = smtpPassword;
+    }
+
+    public String getOAuth2Provider() {
+        return oAuth2Provider;
+    }
+
+    public void setOAuth2Provider(String oAuth2provider) {
+        this.oAuth2Provider = oAuth2provider;
+    }
+
+    public String getOAuth2Scope() {
+        return oAuth2Scope;
+    }
+
+    public void setOAuth2Scope(String oAuth2scope) {
+        this.oAuth2Scope = oAuth2scope;
+    }
+
+    public String getOAuth2AccessToken() {
+        return oAuth2AccessToken;
+    }
+
+    public void setOAuth2AccessToken(String oAuth2accessToken) {
+        this.oAuth2AccessToken = oAuth2accessToken;
+    }
+
+    public String getOAuth2RefreshToken() {
+        return oAuth2RefreshToken;
+    }
+
+    public void setOAuth2RefreshToken(String oAuth2refreshToken) {
+        this.oAuth2RefreshToken = oAuth2refreshToken;
+    }
+
+    public String getOAuth2ExpiryDate() {
+        return oAuth2ExpiryDate;
+    }
+
+    public void setOAuth2ExpiryDate(String oAuth2ExpiryDate) {
+        this.oAuth2ExpiryDate = oAuth2ExpiryDate;
     }
 
     public Set<Message> getMessages() {

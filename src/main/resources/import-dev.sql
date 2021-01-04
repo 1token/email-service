@@ -27,13 +27,13 @@ ALTER TABLE public.resource_server ALTER COLUMN history_id SET NOT NULL;
 ALTER TABLE public.resource_server ALTER COLUMN history_id SET DEFAULT NEXTVAL('resource_server_history_id');
 
 -- Data
-INSERT INTO user_(username) VALUES ('jdoe@example.io');
-INSERT INTO user_(username) VALUES ('mike@acme.org');
+INSERT INTO user_(username) VALUES ('jdoe@acme.org'); -- John Doe
+INSERT INTO user_(username) VALUES ('jroe@acme.org'); -- John Roe
 
-INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@gmail.com', 'Igor Zboran (Gmail)', 'izboran@gmail.com');
+INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@gmail.com', 'Igor Zboran (Gmail-1)', 'izboran@gmail.com');
 INSERT INTO account(user_id, email_address, display_name, username) VALUES (1, 'izboran@hotmail.com', 'Igor Zboran (Hotmail)', 'izboran@hotmail.com');
-INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@gmail.com', 'mike@gmail.com');
-INSERT INTO account(user_id, email_address, username) VALUES (2, 'mike@hotmail.com', 'mike@hotmail.com');
+INSERT INTO account(user_id, email_address, display_name, username) VALUES (2, 'igor.zboran@gmail.com', 'Igor Zboran (Gmail-2)', 'igor.zboran@gmail.com');
+INSERT INTO account(user_id, email_address, username) VALUES (2, 'theo32@protonmail.com', 'theo32@protonmail.com');
 
 INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (1, 'rnd1VLFLDzBJD66ePDc3', 'Hello again!', now());
 INSERT INTO message(account_id, message_id, subject, sent_at) VALUES (1, 'YPRYxyEQtkGdwM4e9pvR', 'Hello!', now());

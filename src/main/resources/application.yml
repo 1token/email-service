@@ -1,0 +1,3 @@
+accounts:
+  - {provider: gmail, email-address: izboran@gmail.com, scope: https://www.googleapis.com/auth/gmail.modify, access-token: abc1, refresh-token: abc2, expiry-date: 1602582304494}
+  - {provider: gmail, email-address: igor.zboran@gmail.com, scope: https://www.googleapis.com/auth/gmail.modify, access-token: efg1, refresh-token: efg2, expiry-date: 1602582304494}
