@@ -37,3 +37,6 @@ nb-configuration.xml
 # sql
 email.session.sql
 postgres-admin.session.sql
+
+# config
+.env
