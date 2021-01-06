@@ -4,14 +4,19 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.acme.emailservice.model.GoogleCredentials;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
@@ -19,6 +24,11 @@ import io.quarkus.security.identity.SecurityIdentity;
 @Path("/hello")
 @RequestScoped
 public class HelloRestApi {
+
+    private static Logger LOGGER = Logger.getLogger(HelloRestApi.class);
+
+    @ConfigProperty(name = "GOOGLE_CREDENTIALS_FAKE")
+    String googleCredentialsConfig;
 
     @Inject
     SecurityIdentity identity;
@@ -28,6 +38,17 @@ public class HelloRestApi {
 
     @Inject @Claim(standard = Claims.given_name)
     String givenName;
+
+    @GET
+    @Path("credentials")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public String helloCredentials() {
+        Jsonb jsonb = JsonbBuilder.create();
+        GoogleCredentials googleCredentials = jsonb.fromJson(googleCredentialsConfig, GoogleCredentials.class);
+        LOGGER.debug(jsonb.toJson(googleCredentials));
+        return jsonb.toJson(googleCredentials);
+    }
     
     @GET
     @Path("public")
