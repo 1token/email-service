@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.acme.emailservice.model.AccountInit;
 import org.acme.emailservice.model.GoogleCredentials;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.Claim;
@@ -30,6 +31,9 @@ public class HelloRestApi {
     @ConfigProperty(name = "GOOGLE_CREDENTIALS_FAKE")
     String googleCredentialsConfig;
 
+    @ConfigProperty(name = "ACCOUNTS_INIT_FAKE")
+    String accountsInitConfig;
+
     @Inject
     SecurityIdentity identity;
 
@@ -48,6 +52,17 @@ public class HelloRestApi {
         GoogleCredentials googleCredentials = jsonb.fromJson(googleCredentialsConfig, GoogleCredentials.class);
         LOGGER.debug(jsonb.toJson(googleCredentials));
         return jsonb.toJson(googleCredentials);
+    }
+    
+    @GET
+    @Path("accounts")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public String helloAccounts() {
+        Jsonb jsonb = JsonbBuilder.create();
+        AccountInit[] accountInitArray = jsonb.fromJson(accountsInitConfig, new AccountInit[] {}.getClass());
+        LOGGER.debug(jsonb.toJson(accountInitArray));
+        return jsonb.toJson(accountInitArray);
     }
     
     @GET
