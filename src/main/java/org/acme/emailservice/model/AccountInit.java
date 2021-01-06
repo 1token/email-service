@@ -9,7 +9,8 @@ public class AccountInit {
     private List<String> scopes;
     private String access_token;
     private String refresh_token;
-    private String expiry_date;
+    // https://stackoverflow.com/questions/39661002/google-oauth-expiry-date-format
+    private long expiry_date;
 
     public String getProvider() {
         return provider;
@@ -51,11 +52,11 @@ public class AccountInit {
         this.refresh_token = refresh_token;
     }
 
-    public String getExpiry_date() {
+    public long getExpiry_date() {
         return expiry_date;
     }
 
-    public void setExpiry_date(String expiry_date) {
+    public void setExpiry_date(long expiry_date) {
         this.expiry_date = expiry_date;
     }
     
