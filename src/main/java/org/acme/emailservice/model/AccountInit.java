@@ -4,6 +4,7 @@ import java.util.List;
 
 public class AccountInit {
     
+    private String username;
     private String provider;
     private String email_address;
     private List<String> scopes;
@@ -12,6 +13,14 @@ public class AccountInit {
     // https://stackoverflow.com/questions/39661002/google-oauth-expiry-date-format
     private long expiry_date;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     public String getProvider() {
         return provider;
     }
@@ -59,5 +68,4 @@ public class AccountInit {
     public void setExpiry_date(long expiry_date) {
         this.expiry_date = expiry_date;
     }
-    
 }

@@ -71,7 +71,7 @@ public class Account {
     @Column(name="OAUTH2_REFRESH_TOKEN", unique = false, nullable = true, columnDefinition="TEXT")
     private String oAuth2RefreshToken;
     @Column(name="OAUTH2_EXPIRY_DATE", unique = false, nullable = true)
-    private String oAuth2ExpiryDate;
+    private Long oAuth2ExpiryDate;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Message> messages = new LinkedHashSet<>();
@@ -231,11 +231,11 @@ public class Account {
         this.oAuth2RefreshToken = oAuth2refreshToken;
     }
 
-    public String getOAuth2ExpiryDate() {
+    public Long getOAuth2ExpiryDate() {
         return oAuth2ExpiryDate;
     }
 
-    public void setOAuth2ExpiryDate(String oAuth2ExpiryDate) {
+    public void setOAuth2ExpiryDate(Long oAuth2ExpiryDate) {
         this.oAuth2ExpiryDate = oAuth2ExpiryDate;
     }
 
