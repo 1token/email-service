@@ -8,7 +8,7 @@ import org.jboss.logging.Logger;
 
 public class GmailClient implements Runnable {
 
-    private static Logger LOGGER = Logger.getLogger(GmailClient.class);
+    private static Logger log = Logger.getLogger(GmailClient.class);
 
     private ScheduledExecutorService scheduler;
     private SynchronizedTask runningTask;
@@ -24,7 +24,7 @@ public class GmailClient implements Runnable {
         runningTask = new SynchronizedTask();
         // OAuth2Authenticator.initialize();
 
-        LOGGER.info("GmailClient created");
+        log.info("GmailClient created");
     }
 
     public void run() {
@@ -33,7 +33,7 @@ public class GmailClient implements Runnable {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                LOGGER.info("Interrupted");
+                log.info("Interrupted");
                 return;
             }
             continue;
@@ -44,11 +44,11 @@ public class GmailClient implements Runnable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        LOGGER.info("GmailClient thread exited gracefully");
+        log.info("GmailClient thread exited gracefully");
     }
 
     public void shutdown() throws InterruptedException {
-        LOGGER.info("GmailClient shutdown");
+        log.info("GmailClient shutdown");
         if (runningTask != null)
         runningTask.stop();
         if (scheduler != null)
@@ -62,7 +62,7 @@ public class GmailClient implements Runnable {
         boolean settingCode;
 
         public SynchronizedTask() {
-            LOGGER.info("GmailClient/SynchronizedTask create");
+            log.info("GmailClient/SynchronizedTask create");
             scheduler.scheduleWithFixedDelay(this, 20, 20, TimeUnit.SECONDS);
             stop = false;
             load = 0;
@@ -81,7 +81,7 @@ public class GmailClient implements Runnable {
                         return;
                     }
                     if (load != 0 && !settingCode) {
-                        LOGGER.info("GmailClient/SynchronizedTask run");
+                        log.info("GmailClient/SynchronizedTask run");
                     } else
                         load++;
                 }
@@ -89,7 +89,7 @@ public class GmailClient implements Runnable {
                 while (!Thread.interrupted()) {
                     stop = true;
                     Thread.currentThread().interrupt();
-                    LOGGER.info("GmailClient/SynchronizedTask Exception interupted");
+                    log.info("GmailClient/SynchronizedTask Exception interupted");
                 }
             }
         }
@@ -98,7 +98,7 @@ public class GmailClient implements Runnable {
             while (!Thread.interrupted()) {
                 stop = true;
                 Thread.currentThread().interrupt();
-                LOGGER.info("GmailClient/SynchronizedTask interrupted");
+                log.info("GmailClient/SynchronizedTask interrupted");
             }
         }
     }

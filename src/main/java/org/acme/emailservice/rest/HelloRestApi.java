@@ -26,7 +26,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 @RequestScoped
 public class HelloRestApi {
 
-    private static Logger LOGGER = Logger.getLogger(HelloRestApi.class);
+    private static Logger log = Logger.getLogger(HelloRestApi.class);
 
     @ConfigProperty(name = "GOOGLE_CREDENTIALS_FAKE")
     String googleCredentialsConfig;
@@ -50,7 +50,7 @@ public class HelloRestApi {
     public String helloCredentials() {
         Jsonb jsonb = JsonbBuilder.create();
         GoogleCredentials googleCredentials = jsonb.fromJson(googleCredentialsConfig, GoogleCredentials.class);
-        LOGGER.debug(jsonb.toJson(googleCredentials));
+        log.debug(jsonb.toJson(googleCredentials));
         return jsonb.toJson(googleCredentials);
     }
     
@@ -61,7 +61,7 @@ public class HelloRestApi {
     public String helloAccounts() {
         Jsonb jsonb = JsonbBuilder.create();
         AccountInit[] accountInitArray = jsonb.fromJson(accountsInitConfig, new AccountInit[] {}.getClass());
-        LOGGER.debug(jsonb.toJson(accountInitArray));
+        log.debug(jsonb.toJson(accountInitArray));
         return jsonb.toJson(accountInitArray);
     }
     

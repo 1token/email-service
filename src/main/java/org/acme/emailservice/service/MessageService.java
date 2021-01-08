@@ -23,7 +23,7 @@ import org.acme.emailservice.model.User;
 @ApplicationScoped
 public class MessageService {
 
-    // private static Logger LOGGER = Logger.getLogger(Message.class);
+    // private static Logger log = Logger.getLogger(Message.class);
 
     @PersistenceContext
     EntityManager em;

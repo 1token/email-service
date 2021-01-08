@@ -6,7 +6,7 @@ import jakarta.mail.Folder;
 
 public class EmailService {
 
-    private static Logger LOGGER = Logger.getLogger(EmailService.class);
+    private static Logger log = Logger.getLogger(EmailService.class);
 
     public Folder inbox;
 
@@ -15,7 +15,7 @@ public class EmailService {
 
     public EmailService() {
 
-        LOGGER.info("EmailService created");
+        log.info("EmailService created");
 
         threads = new Thread[nthreads];
 		for (int i = 0; i < nthreads; i++) {
@@ -25,7 +25,7 @@ public class EmailService {
     }
 
     public void shutdown() throws InterruptedException {
-        LOGGER.info("EmailService shutdown");
+        log.info("EmailService shutdown");
         GmailClient.die = true;
         // wait for all the threads to finish
         // for (int i = 0; i < nthreads; i++) {

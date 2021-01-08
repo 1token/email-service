@@ -38,7 +38,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NamedQuery(name = "Message.getAllByAccount", query = "SELECT m FROM Message m WHERE m.account.user.username=:username AND m.account=:account ORDER BY m.timelineId DESC")
 public class Message {
 
-    // private static Logger LOGGER = Logger.getLogger(Message.class);
+    // private static Logger log = Logger.getLogger(Message.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,8 +31,7 @@ import javax.security.sasl.SaslClientFactory;
  * passed to the OAuth2SaslClient. Other parameters are ignored.
  */
 public class OAuth2SaslClientFactory implements SaslClientFactory {
-	private static final Logger logger = Logger
-			.getLogger(OAuth2SaslClientFactory.class.getName());
+	private static final Logger log = Logger.getLogger(OAuth2SaslClientFactory.class.getName());
 
 	public static final String OAUTH_TOKEN_PROP = "mail.gimaps.sasl.mechanisms.oauth2.oauthToken";
 
@@ -47,7 +46,7 @@ public class OAuth2SaslClientFactory implements SaslClientFactory {
 			}
 		}
 		if (!matchedMechanism) {
-			logger.info("Failed to match any mechanisms");
+			log.info("Failed to match any mechanisms");
 			return null;
 		}
 		return new OAuth2SaslClient((String) props.get(OAUTH_TOKEN_PROP),
