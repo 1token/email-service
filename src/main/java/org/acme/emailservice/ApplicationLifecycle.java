@@ -25,10 +25,11 @@ public class ApplicationLifecycle {
     @ConfigProperty(name = "server.timezone")
     String timeZone;
 
-    private EmailService emailService;
-
     @Inject
     AccountInitService accountInitService;
+
+    @Inject
+    EmailService emailService;
 
     @PostConstruct
     public void init() {
@@ -42,12 +43,13 @@ public class ApplicationLifecycle {
     public void onStart(@Observes StartupEvent event) {
 
         log.info("The application is starting with " + ProfileManager.getActiveProfile() + " profile");
-        emailService = new EmailService();
 
-        // only for dev, create accounts
+        // only for dev, init accounts
         if (ProfileManager.getActiveProfile() == "dev") {
             accountInitService.persistAccount();
         }
+        
+        emailService.start();
     }
 
     public void onStop(@Observes ShutdownEvent event) throws InterruptedException {
