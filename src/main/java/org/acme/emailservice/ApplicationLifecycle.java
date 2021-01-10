@@ -45,7 +45,9 @@ public class ApplicationLifecycle {
         emailService = new EmailService();
 
         // only for dev, create accounts
-        accountInitService.persistAccount();
+        if (ProfileManager.getActiveProfile() == "dev") {
+            accountInitService.persistAccount();
+        }
     }
 
     public void onStop(@Observes ShutdownEvent event) throws InterruptedException {
