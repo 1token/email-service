@@ -57,9 +57,10 @@ public class EmailService {
 
     public void shutdown() throws InterruptedException {
         log.info("EmailService shutdown");
-        GmailClient.die = true;
+        /* GmailClient.die = true;
         OutlookClient.die = true;
-        EmailClient.die = true;
+        EmailClient.die = true; */
+        BaseClassClient.die = true;
         // wait for all the threads to finish
         // for (int i = 0; i < nthreads; i++) {
         // threads[i].interrupt();
