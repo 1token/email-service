@@ -33,7 +33,7 @@ import javax.security.sasl.SaslClientFactory;
 public class OAuth2SaslClientFactory implements SaslClientFactory {
 	private static final Logger log = Logger.getLogger(OAuth2SaslClientFactory.class.getName());
 
-	public static final String OAUTH_TOKEN_PROP = "mail.gimaps.sasl.mechanisms.oauth2.oauthToken";
+	public static final String OAUTH_TOKEN_PROP = "mail.imaps.sasl.mechanisms.oauth2.oauthToken";
 
 	public SaslClient createSaslClient(String[] mechanisms,
 			String authorizationId, String protocol, String serverName,

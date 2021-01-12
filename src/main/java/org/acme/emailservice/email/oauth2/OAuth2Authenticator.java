@@ -37,7 +37,7 @@ public class OAuth2Authenticator {
 
 		public OAuth2Provider() {
 			super("Google OAuth2 Provider", 1.0, "Provides the XOAUTH2 SASL Mechanism");
-			put("SaslClientFactory.XOAUTH2", "edu.mit.media.immersion.reader.oauth2.OAuth2SaslClientFactory");
+			put("SaslClientFactory.XOAUTH2", "org.acme.emailservice.email.oauth2.OAuth2SaslClientFactory");
 		}
 	}
 
@@ -65,16 +65,28 @@ public class OAuth2Authenticator {
 	 * @throws MessagingException
 	 */
 	public static Store connectToImap(String userEmail, String oauthToken) throws MessagingException {
+		System.out.println("OAuth2Authenticator " + userEmail);
+		System.out.println("OAuth2Authenticator " + oauthToken);
+
 		Properties props = new Properties();
-		props.put("mail.gimaps.sasl.enable", "true");
-		props.put("mail.gimaps.sasl.mechanisms", "XOAUTH2");
-		props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken);
+		// props.put("mail.store.protocol", "gimaps");
+		props.put("mail.imap.ssl.enable", "true");
+		props.put("mail.imaps.sasl.enable", "true");
+		props.put("mail.imaps.sasl.mechanisms", "XOAUTH2");
+		props.put("mail.imap.auth.xoauth2.disable", "false");
+		props.put("mail.imap.auth.login.disable", "true");
+		props.put("mail.imap.auth.plain.disable", "true");
+		props.put("mail.debug.auth", "true");
+		// props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken);
 
 		Session session = Session.getInstance(props);
 		session.setDebug(true);
 
-		Store store = session.getStore();
-		store.connect("imap.gmail.com", 993, userEmail, "");
+		/* session.getProperties().setProperty(
+			OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken); */
+
+		Store store = session.getStore("imap");
+		store.connect("imap.gmail.com", 993, userEmail, oauthToken);
 		return store;
 	}
 
@@ -100,13 +112,13 @@ public class OAuth2Authenticator {
 		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.smtp.sasl.enable", "false");
 		props.put("mail.smtp.sasl.mechanisms", "XOAUTH2");
-		props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken);
+		// props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken); // ???
 
 		Session session = Session.getInstance(props);
 		session.setDebug(debug);
 
 		Transport transport = session.getTransport("smtp");
-		transport.connect(host, port, userEmail, null);
+		transport.connect(host, port, userEmail, oauthToken); // ???
 		return transport;
 	}
 }

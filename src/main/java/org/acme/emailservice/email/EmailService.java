@@ -3,6 +3,7 @@ package org.acme.emailservice.email;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
