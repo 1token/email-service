@@ -1,8 +1,13 @@
 package org.acme.emailservice.email;
 
+import java.awt.Desktop;
+import java.net.URI;
+import java.util.Collections;
+
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleRefreshTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -57,6 +62,44 @@ public class GmailClient extends BaseClassClient {
 
         log.info("GmailClient created");
     }
+
+    /* public void promptCode() {
+		String redirectUrl = "urn:ietf:wg:oauth:2.0:oob";
+		String url = new GoogleAuthorizationCodeRequestUrl(googleCredentials.getClient_id(), redirectUrl,
+				Collections.singleton("https://mail.google.com/")).setAccessType("offline").build();
+		try {
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().browse(new URI(url));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("If a url did not automatically open, please open the following in your browser:\n" + url);
+		try {
+			String start = getProperty("gmail.code");
+			for (int i = 0; i < 4; i++) {
+				Thread.sleep(20000);
+				if (!getProperty("gmail.code").equals(start))
+					break;
+			}
+			if (getProperty("gmail.code").equals(start)) {
+				promptCode();
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		GoogleTokenResponse response;
+		try {
+			response = new GoogleAuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(),
+            googleCredentials.getClient_id(), googleCredentials.getClient_secret(), getProperty("gmail.code"),
+					redirectUrl).execute();
+			refreshToken = response.getRefreshToken();
+			accessToken = response.getAccessToken();
+			System.out.println("Tokens added.");
+		} catch (Exception e) {
+		}
+	} */
 
     public void refreshTokens() {
 		try {
