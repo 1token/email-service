@@ -17,6 +17,10 @@ The application can be packaged using:
 ```shell script
 ./mvnw package
 ```
+or without tests (skip tests)
+```shell script
+./mvn package -Dmaven.test.skip=true
+```
 It produces the `email-service-1.0.0-SNAPSHOT-runner.jar` file in the `/target` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
 

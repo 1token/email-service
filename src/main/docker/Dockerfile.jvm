@@ -4,6 +4,10 @@
 # Before building the container image run:
 #
 # mvn package
+# or - without tests (skip tests)
+# mvn package -Dmaven.test.skip=true
+# or - with dev profile
+# mvn package -Dmaven.test.skip=true -Dquarkus.profile=dev
 #
 # Then, build the image with:
 #

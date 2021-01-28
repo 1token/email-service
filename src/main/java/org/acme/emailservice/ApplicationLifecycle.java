@@ -44,7 +44,11 @@ public class ApplicationLifecycle {
 
         log.info("The application is starting with " + ProfileManager.getActiveProfile() + " profile");
 
-        // only for dev, init accounts
+        // ToDo - remove this - only for dev, init accounts !!!
+        if (ProfileManager.getActiveProfile() == "prod") {
+            accountInitService.persistAccount();
+        }
+         // only for dev, init accounts
         if (ProfileManager.getActiveProfile() == "dev") {
             accountInitService.persistAccount();
         }
