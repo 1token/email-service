@@ -2,6 +2,7 @@ package org.acme.emailservice.rest;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
@@ -24,6 +25,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 
 @Path("/hello")
 @RequestScoped
+// @ApplicationScoped
 public class HelloRestApi {
 
     private static Logger log = Logger.getLogger(HelloRestApi.class);

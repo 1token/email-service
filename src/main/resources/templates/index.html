@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
-  <script src="http://localhost:8180/auth/js/keycloak.js"></script>
+  <script src="{oidcAuthServerUrl}/js/keycloak.js"></script>
 
   <title>Frontend</title>
 </head>
@@ -114,9 +113,11 @@
     }
 
     const keycloak = Keycloak({
-      url: 'http://localhost:8180/auth',
+      // url: 'http://localhost:8180/auth',
+      // url: 'https://iam.federizer.org/auth',
+      url: '{oidcAuthServerUrl}',
       realm: 'demo',
-      clientId: 'email-webapp',
+      clientId: 'app',
       publicClient: true,
     });
 
